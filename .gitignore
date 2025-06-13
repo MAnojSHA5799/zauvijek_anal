@@ -1,0 +1,48 @@
+# Node modules
+node_modules/
+
+# Build output
+.next/
+out/
+
+# Production
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: lock file if using one package manager
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
+
+# Coverage
+coverage/
+
+# Recoil (if snapshot testing)
+__recoil.snapshots__
