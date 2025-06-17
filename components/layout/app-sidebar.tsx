@@ -50,7 +50,7 @@ import { signOut } from "@/lib/actions";
 export const company = {
   name: "Zauvijek Pvt Ltd",
   logo: GalleryVerticalEnd,
-  plan: "Enterprise",
+  plan: "Automation",
 };
 
 export default function AppSidebar({ token }: { token: string }) {
@@ -76,7 +76,7 @@ export default function AppSidebar({ token }: { token: string }) {
       <SidebarContent className="overflow-x-hidden">
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
-          <SidebarMenu>
+          <SidebarMenu className="p-0 m-0">
             {navItems.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
               return item?.items && item?.items?.length > 0 ? (

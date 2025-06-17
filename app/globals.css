@@ -73,18 +73,21 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply box-border bg-background text-foreground;
   }
+
+  a {
+    @apply no-underline text-inherit;
+    text-decoration: none !important; /* in case Bootstrap overrides */
+  }
 }
 
-/* Refined shadow utilities for better layering */
 @layer utilities {
   .shadow-card-dark {
     box-shadow:
@@ -98,30 +101,58 @@
       0 5px 15px rgba(0, 0, 0, 0.4);
   }
 
-  /* New utility for subtle hover states */
   .hover-elevation-dark {
     transition: background-color 0.2s ease;
   }
+
   .hover-elevation-dark:hover {
     background-color: rgba(255, 255, 255, 0.03);
   }
-}
-@layer utilities {
+
   .min-h-screen {
-    min-height: 100vh; /* Fallback */
+    min-height: 100vh;
     min-height: 100dvh;
   }
+
   .h-screen {
-    height: 100vh; /* Fallback */
+    height: 100vh;
     height: 100dvh;
   }
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif; /* Or your preferred font */
+  background-color: #f3f4f6; /* Tailwind's gray-100 */
+  color: #1f2937; /* Tailwind's gray-800 */
+  min-height: 100vh;
 }
+/* Reset all margins and paddings globally */
+/* * {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+} */
+
+/* Optional: Remove body-specific spacing */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.custom-view-btn {
+  font-size: 0.875rem; /* text-sm */
+  color: #7f81fa; /* Bootstrap primary */
+  padding: 0;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s, text-decoration 0.3s;
+  text-decoration: none;
+}
+
+.custom-view-btn:hover {
+  color: #7f81fa; /* Slightly darker */
+  text-decoration: none;
+}
+

@@ -21,6 +21,38 @@ export const navItems: NavItem[] = [
     shortcut: ["d", "d"],
     items: [], // Empty array as there are no child items for Dashboard
   },
+  {
+    title: "New Dashboard",
+    url: "/dashboard/new",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
+    {
+    title: "Data Management",
+    url: "/dashboard/data-management",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: "Fishbone Analysis",
+    url: "/dashboard/fishbone",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
+   {
+    title: "FEMA Analysis",
+    url: "/dashboard/FMEA-Analysis",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
   // {
   //   title: "Users",
   //   url: "/dashboard/users",

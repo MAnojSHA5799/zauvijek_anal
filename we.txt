@@ -1,0 +1,111 @@
+"use client";
+
+import React, { useState, useMemo } from "react";
+
+import {
+  ComposedChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  AreaChart,
+  Area,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell,
+  LabelList,
+} from "recharts";
+import { Row, Col, Modal, Button } from "react-bootstrap";
+const OverviewPage = () => {
+  const [filter, setFilter] = useState("monthly");
+  const [showModal, setShowModal] = useState(false);
+  const OverviewPage = () => {
+  const [filter, setFilter] = useState("monthly");
+  const [showModal, setShowModal] = useState(false);
+  const visibleProcesses = processList.slice(0, 7); // show only first 8 in card
+  const filteredData = useMemo(() => {
+    if (filter === "weekly") return chartData.slice(0, 5);
+    if (filter === "yearly") return chartData;
+    return chartData.slice(0, 12);
+  }, [filter]);
+  type CustomBarProps = {
+  fill?: string;
+  x?: number | string;
+  y?: number | string;
+  width?: number | string;
+  height?: number | string;
+  value?: number | string;
+};
+
+const CustomBar = ({
+  fill = "#8884d8",
+  x = 0,
+  y = 0,
+  width = 0,
+  height = 0,
+  value = 0,
+}: CustomBarProps): React.JSX.Element => {
+  const numX = Number(x);
+  const numY = Number(y);
+  const numWidth = Number(width);
+  const numHeight = Number(height);
+
+  return (
+    <g>
+      <rect x={numX} y={numY} width={numWidth} height={numHeight} fill={fill} rx={6} />
+      <text
+        x={numX + numWidth / 2}
+        y={numY - 8}
+        fill="#fff"
+        textAnchor="middle"
+        fontSize={12}
+      >
+        {value}
+      </text>
+    </g>
+  );
+};
+
+
+
+  return (
+    <Col>
+          <ChartCard title="Stacked Metrics">
+            <BarChart data={sampleData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" stackId="a" fill="#6366F1" />
+              <Bar dataKey="value2" stackId="a" fill="#10B981" />
+            </BarChart>
+          </ChartCard>
+        </Col>
+
+        
+      </Row>
+    </div>
+  );
+};
+
+const ChartCard = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div className="bg-white p-4 rounded-2xl shadow-md hover:shadow-xl transition duration-300 h-[350px]">
+    <h4 className="text-lg font-semibold text-gray-700 mb-4">{title}</h4>
+    <ResponsiveContainer width="100%" height="80%">
+      {children}
+    </ResponsiveContainer>
+  </div>
+);
+
+export default OverviewPage;
