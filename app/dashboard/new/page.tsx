@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
+  LineChart, Line, BarChart, Bar,
   XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
   CartesianGrid
 } from "recharts";
