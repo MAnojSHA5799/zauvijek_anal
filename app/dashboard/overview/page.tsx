@@ -370,42 +370,51 @@ const OverviewPage = () => {
       </div>
 
       {/* 📊 Metrics Section From Your Code */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-3">
-        {/* Total Processes */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Total Processes</div>
-          <div className="text-sm">14</div>
-          {/* <div className="text-xs  mt-1">+100%</div> */}
-        </div>
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-3">
+  {/* Total Processes */}
+  <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">Total Processes</div>
+    <div className="text-sm">14</div>
+  </div>
 
-        {/* Electricity Saved */}
-        <div className="bg-gradient-to-r from-green-600 to-green-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Electricity Saved</div>
-          <div className="text-sm">₹18,337</div>
-          {/* <div className="text-xs  mt-1">-47%</div> */}
-        </div>
+  {/* Total Expense Without Zauvijek */}
+  <div className="bg-gradient-to-r from-gray-700 to-gray-500 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">Without Zauvijek</div>
+    <div className="text-sm">₹17,308.75</div>
+  </div>
 
-        {/* Carbon Reduced */}
-        <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Carbon Reduced</div>
-          <div className="text-sm">2.8 Tons</div>
-          {/* <div className="text-xs  mt-1">-32%</div> */}
-        </div>
+  {/* Total Expense With Zauvijek */}
+  <div className="bg-gradient-to-r from-sky-700 to-sky-500 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">With Zauvijek</div>
+    <div className="text-sm">₹12,457.88</div>
+  </div>
 
-        {/* Total Rejections */}
-        <div className="bg-gradient-to-r from-rose-600 to-red-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Total Rejections</div>
-          <div className="text-sm">6.6 MT</div>
-          {/* <div className="text-xs  mt-1">+0.72%</div> */}
-        </div>
+  {/* Electricity Saved */}
+  {/* <div className="bg-gradient-to-r from-green-600 to-green-500 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">Electricity Saved</div>
+    <div className="text-sm">₹4,850.88</div>
+  </div> */}
 
-        {/* Total Savings */}
-        <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Total Savings</div>
-          <div className="text-sm">₹42,000</div>
-          {/* <div className="text-xs mt-1">+63%</div> */}
-        </div>
-      </div>
+  {/* Avg. Cost Reduction */}
+  <div className="bg-gradient-to-r from-rose-600 to-red-500 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">Avg. Cost Reduction</div>
+    <div className="text-sm">~28%</div>
+  </div>
+
+  {/* Carbon Reduced */}
+  <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">CO₂ Reduced</div>
+    <div className="text-sm">2.8 Tons</div>
+  </div>
+
+  {/* Total Savings */}
+  <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-3 rounded-xl text-white shadow">
+    <div className="text-xl font-semibold">Total Savings</div>
+    <div className="text-sm">₹4,850.88</div>
+  </div>
+</div>
+
+
 
       {/* Users Overview + Device Pie */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">
@@ -973,16 +982,32 @@ const OverviewPage = () => {
         </Col>
 
         <Col>
-          <ChartCard title="Stacked Metrics">
-            <BarChart data={sampleData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" stackId="a" fill="#6366F1" />
-              <Bar dataKey="value2" stackId="a" fill="#10B981" />
-            </BarChart>
-          </ChartCard>
+          <ChartCard title="Electricity Consumption: Before vs After Zauvijek">
+  <BarChart width={800} height={400} data={[
+    { name: 'Pattern Making', before: 3, after: 1.2 },
+    { name: 'Mold Prep', before: 4.5, after: 2 },
+    { name: 'Assembly', before: 3, after: 1.2 },
+    { name: 'Metal Melting', before: 700, after: 600 },
+    // { name: 'Tapping', before: 4000, after: 2250 }, // noted in ₹
+    { name: 'Purification', before: 70, after: 40 },
+    { name: 'Pouring', before: 80, after: 50 },
+    { name: 'Rough Casting', before: 35, after: 20 },
+    { name: 'Cooling', before: 25, after: 15 },
+    { name: 'Solidification', before: 10, after: 5 },
+    { name: 'Risers', before: 8, after: 4 },
+    { name: 'Shakeout', before: 5, after: 3 },
+    { name: 'Mold Breaking', before: 7, after: 4 },
+    { name: 'Fettling', before: 12, after: 7 },
+  ]}>
+    <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" height={80} />
+    <YAxis label={{ value: 'kWh or ₹ (approx)', angle: -90, position: 'insideLeft' }} />
+    <Tooltip />
+    <Legend />
+    <Bar dataKey="before" name="Before Zauvijek" fill="#F97316" />
+    <Bar dataKey="after" name="With Zauvijek" fill="#10B981" />
+  </BarChart>
+</ChartCard>
+
         </Col>
       </Row>
     </div>

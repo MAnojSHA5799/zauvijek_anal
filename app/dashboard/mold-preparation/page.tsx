@@ -1,188 +1,196 @@
-// components/scrap/Scrapviewpage.tsx
 "use client";
 
 import React from "react";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
   Legend,
   BarChart,
   Bar,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  ScatterChart,
-  Scatter,
-  ZAxis,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar
+  LineChart,
+  Line,
+  CartesianGrid
 } from "recharts";
 
-// const scrapData = [
-//   { condition: "Without Zauvijek", energyKWh: 4.5, costPerTon: 2925, monthlyLoss: 0 },
-//   { condition: "With Zauvijek", energyKWh: 2, costPerTon: 1300, monthlyLoss: -1625 },
-// ];
-
-const weeklyData = [
-  { day: "Mon", energy: 4.5, cost: 2925 },
-  { day: "Tue", energy: 4.3, cost: 2820 },
-  { day: "Wed", energy: 4.1, cost: 2700 },
-  { day: "Thu", energy: 3.8, cost: 2500 },
-  { day: "Fri", energy: 3.6, cost: 2350 },
-  { day: "Sat", energy: 3.2, cost: 2100 },
-  { day: "Sun", energy: 2, cost: 1300 },
+// KPI stats for display
+const processStats = [
+  { label: "Processes Name", value: "Mold Preparation", color: "#3B82F6" },
+  { label: "Electricity Saved", value: "₹1,625", color: "#10B981" },
+  { label: "Carbon Reduced", value: "~55.56%", color: "#22C55E" },
+  { label: "Total Rejections", value: "Reduced", color: "#EF4444" },
+  { label: "Total Savings", value: "₹1,625", color: "#F59E0B" },
 ];
 
-const voltageData = [
-  { month: "Aug", voltage: 220, current: 20, pf: 0.92 },
-  { month: "Jul", voltage: 215, current: 18, pf: 0.9 },
-  { month: "Jun", voltage: 225, current: 22, pf: 0.94 },
+// Area chart data (30 days)
+const costComparisonData = Array.from({ length: 30 }).map((_, i) => ({
+  day: i + 1,
+  manual: 2925 - i * 15,
+  zauvijek: 1300 + i * 10,
+}));
+
+// Pie chart data
+const efficiencySplitData = [
+  { name: "Zauvijek Automated (55.56%)", value: 55.56 },
+  { name: "Manual (44.44%)", value: 44.44 },
 ];
 
-const frequencyData = [
-  { date: "Jan 22", frequency: 50 },
-  { date: "Nov 1", frequency: 49.8 },
-  { date: "May 22", frequency: 50.2 },
+// Extended bar chart data for one year (monthly)
+const rejectionData = [
+  { category: "Jan", manual: 14, zauvijek: 4 },
+  { category: "Feb", manual: 13, zauvijek: 5 },
+  { category: "Mar", manual: 12, zauvijek: 6 },
+  { category: "Apr", manual: 11, zauvijek: 4 },
+  { category: "May", manual: 13, zauvijek: 5 },
+  { category: "Jun", manual: 14, zauvijek: 6 },
+  { category: "Jul", manual: 13, zauvijek: 4 },
+  { category: "Aug", manual: 12, zauvijek: 5 },
+  { category: "Sep", manual: 11, zauvijek: 6 },
+  { category: "Oct", manual: 13, zauvijek: 4 },
+  { category: "Nov", manual: 14, zauvijek: 5 },
+  { category: "Dec", manual: 13, zauvijek: 6 },
 ];
 
-const energyConsumptionData = [
-  { date: "Jan 2", energy: 900 },
-  { date: "Jan 3", energy: 850 },
-  { date: "Jan 4", energy: 800 },
-  { date: "Jan 5", energy: 750 },
-  { date: "Jan 6", energy: 720 },
-  { date: "Jan 7", energy: 700 },
+// Combined bar + line chart data (weekly sample)
+const monthlyConsumption = [
+  { date: "Dec 31", production: 550, current: 340 },
+  { date: "Jan 7", production: 400, current: 670 },
+  { date: "Jan 14", production: 600, current: 640 },
+  { date: "Jan 21", production: 450, current: 300 },
+  { date: "Jan 28", production: 300, current: 280 },
+  { date: "Feb 4", production: 600, current: 720 },
+  { date: "Feb 11", production: 480, current: 640 },
+  { date: "Feb 18", production: 620, current: 610 },
+  { date: "Feb 25", production: 580, current: 320 },
+  { date: "Mar 3", production: 300, current: 260 },
+  { date: "Mar 10", production: 590, current: 680 },
+  { date: "Mar 17", production: 430, current: 650 },
+  { date: "Mar 24", production: 310, current: 310 },
+  { date: "Apr 1", production: 540, current: 390 },
+  { date: "Apr 7", production: 470, current: 440 },
 ];
 
-const pieData = [
-  { name: "Preheat Scrap", value: 3 },
-  { name: "Peak Load Mgmt", value: 1 },
-  { name: "Induction Furnace", value: 2 },
-  { name: "Smart Power Ctrl", value: 2 },
-  { name: "Waste Heat Recovery", value: 2 },
-  { name: "AI Process Control", value: 1 },
-];
+const COLORS = ["#6366F1", "#10B981"];
 
-const scatterData = [
-  { temp: 0, consumption: 0 },
-  { temp: 450, consumption: 250 },
-  { temp: 900, consumption: 500 },
-  { temp: 1350, consumption: 750 },
-  { temp: 1800, consumption: 1000 },
-];
+// 🔹 KPI Card
+interface StatCardProps {
+  label: string;
+  value: string;
+  color: string;
+}
 
+const StatCard = ({ label, value, color }: StatCardProps) => (
+  <div className="flex-1 bg-white shadow rounded-lg p-4" style={{ borderTop: `4px solid ${color}` }}>
+    <h4 className="text-sm font-semibold text-gray-500">{label}</h4>
+    <p className="text-1xl font-bold text-gray-900">{value}</p>
+  </div>
+);
+
+
+// 🔷 Dashboard Layout
 const MoldPreparationviewpage = () => {
   return (
-    <div className="p-4 space-y-10">
-      <h2 className="text-2xl font-bold mb-6">🧪 Mold Preparation Impact Analysis</h2>
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      {/* KPI Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+        {processStats.map((stat) => (
+          <StatCard key={stat.label} {...stat} />
+        ))}
+      </div>
 
-      <section>
-        <h3 className="text-xl font-semibold mb-4">📊 Graphs Overview</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Bar Chart - Voltage, Current, PF */}
-          <div className="md:col-span-2">
-            <h4 className="text-lg font-semibold mb-2">⚡ Power Parameters (Last 3 Months)</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={voltageData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="voltage" fill="#fbbf24" name="Voltage" />
-                <Bar dataKey="current" fill="#3b82f6" name="Current" />
-                <Bar dataKey="pf" fill="#10b981" name="Power Factor" />
-              </BarChart>
-            </ResponsiveContainer>
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Area Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-3">
+            <h6 className="font-semibold text-gray-700">Electricity Cost Comparison (₹)</h6>
+            <a href="#" className="text-indigo-600 text-sm">View Full Report →</a>
           </div>
-
-          {/* Line Chart - Frequency */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">📈 Frequency Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={frequencyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line dataKey="frequency" stroke="#f43f5e" name="Frequency" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Area Chart - Energy Consumption */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">📉 Energy Consumption Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={energyConsumptionData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Area dataKey="energy" stroke="#6366f1" fill="#c7d2fe" name="Energy" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Pie Chart - Energy Saving */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">🥧 Energy Saving Strategies</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Tooltip />
-                <Legend />
-                <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#60a5fa" label />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Scatter Chart - Melting Temp vs. Consumption */}
-          <div className="md:col-span-2">
-            <h4 className="text-lg font-semibold mb-2">🔥 Melting Temp vs. Energy Consumption</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <ScatterChart>
-                <CartesianGrid />
-                <XAxis type="number" dataKey="temp" name="Temperature" unit="°C" />
-                <YAxis type="number" dataKey="consumption" name="Energy" unit="kWh" />
-                <ZAxis range={[100]} />
-                <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-                <Legend />
-                <Scatter name="Temp vs Energy" data={scatterData} fill="#8b5cf6" />
-              </ScatterChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Radar Chart - Weekly Energy and Cost */}
-          <div className="md:col-span-2">
-            <h4 className="text-lg font-semibold mb-2">📡 Weekly Scrap Reduction Comparison</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <RadarChart data={weeklyData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="day" />
-                <PolarRadiusAxis />
-                <Radar name="Energy" dataKey="energy" stroke="#14b8a6" fill="#5eead4" fillOpacity={0.6} />
-                <Radar name="Cost" dataKey="cost" stroke="#f87171" fill="#fecaca" fillOpacity={0.6} />
-                <Legend />
-                <Tooltip />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer width="100%" height={265}>
+            <AreaChart data={costComparisonData}>
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Area type="monotone" dataKey="manual" stroke="#f97316" fill="#f97316" fillOpacity={0.2} name="Manual Cost" />
+              <Area type="monotone" dataKey="zauvijek" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} name="Zauvijek Cost" />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
-      </section>
+
+        {/* Pie Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-3">
+            <h6 className="font-semibold text-gray-700">Electricity Efficiency Split</h6>
+            <a href="#" className="text-indigo-600 text-sm">View report →</a>
+          </div>
+          <ResponsiveContainer width="100%" height={265}>
+            <PieChart>
+              <Pie
+                data={efficiencySplitData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={90}
+                label
+              >
+                {efficiencySplitData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Legend />
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Bar Chart */}
+        <div className="bg-white p-4 rounded-lg shadow col-span-1 md:col-span-2">
+          <div className="flex justify-between items-center mb-3">
+            <h6 className="font-semibold text-gray-700">Monthly Rejection Rate (1 Year)</h6>
+            <a href="#" className="text-indigo-600 text-sm">See analysis →</a>
+          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={rejectionData}>
+              <XAxis dataKey="category" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="manual" fill="#f97316" name="Manual Rejections" />
+              <Bar dataKey="zauvijek" fill="#10b981" name="Zauvijek Rejections" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Mixed Bar + Line Chart */}
+        <div className="bg-white p-4 rounded-lg shadow col-span-1 md:col-span-2">
+          <div className="flex justify-between items-center mb-3">
+            <h6 className="font-semibold text-gray-700">Monthly Consumption</h6>
+          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={monthlyConsumption}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="production" fill="#10b981" name="Production" />
+              <Line type="monotone" dataKey="current" stroke="#fbbf24" name="Current" dot={{ r: 4 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default MoldPreparationviewpage;
+ 
+
 

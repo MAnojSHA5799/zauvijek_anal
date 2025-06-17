@@ -17,181 +17,129 @@ import {
   Bar,
 } from "recharts";
 
+const processStats = [
+  { label: "Processes Name", value: "Cooling", color: "#3B82F6" },
+  { label: "Electricity Saved", value: "₹585", color: "#10B981" },
+  { label: "Carbon Reduced", value: "~40%", color: "#22C55E" },
+  { label: "Total Rejections", value: "Reduced", color: "#EF4444" },
+  { label: "Total Savings", value: "₹585", color: "#F59E0B" },
+];
+
 const scrapData = [
-  { dust: "0%", extraEnergy: "0%", energyKWh: 900, costPerTon: 9000, monthlyLoss: 0 },
-  { dust: "1%", extraEnergy: "+2%", energyKWh: 918, costPerTon: 9180, monthlyLoss: 270000 },
-  { dust: "3%", extraEnergy: "+6%", energyKWh: 954, costPerTon: 9540, monthlyLoss: 810000 },
-  { dust: "5%", extraEnergy: "+10%", energyKWh: 990, costPerTon: 9900, monthlyLoss: 1350000 },
+  { dust: "0%", extraEnergy: "0%", energyKWh: 15, costPerTon: 877.5, monthlyLoss: 0 },
+  { dust: "1%", extraEnergy: "+2%", energyKWh: 16, costPerTon: 900, monthlyLoss: 8000 },
+  { dust: "3%", extraEnergy: "+6%", energyKWh: 18, costPerTon: 950, monthlyLoss: 18000 },
+  { dust: "5%", extraEnergy: "+10%", energyKWh: 20, costPerTon: 1000, monthlyLoss: 30000 },
+];
+
+const savingsForecastData = [
+  { month: "Jan", manual: 1462.5, zauvijek: 877.5 },
+  { month: "Feb", manual: 1450, zauvijek: 865 },
+  { month: "Mar", manual: 1435, zauvijek: 850 },
+  { month: "Apr", manual: 1420, zauvijek: 835 },
+  { month: "May", manual: 1405, zauvijek: 820 },
+  { month: "Jun", manual: 1390, zauvijek: 805 },
+];
+
+const predictiveROIData = [
+  { month: "Jan", roi: 7 },
+  { month: "Feb", roi: 8 },
+  { month: "Mar", roi: 9 },
+  { month: "Apr", roi: 10 },
+  { month: "May", roi: 11 },
+  { month: "Jun", roi: 12 },
+];
+
+const powerFactorData = [
+  { week: "W1", pf: 0.88 },
+  { week: "W2", pf: 0.89 },
+  { week: "W3", pf: 0.91 },
+  { week: "W4", pf: 0.93 },
+  { week: "W5", pf: 0.94 },
+  { week: "W6", pf: 0.95 },
 ];
 
 const COLORS = ["#22c55e", "#3b82f6", "#f97316", "#ef4444"];
 
-const Coolingviewpage = () => {
+export default function Coolingviewpage() {
   const pieData = scrapData
     .filter((item) => item.monthlyLoss > 0)
-    .map((item) => ({
-      name: item.dust,
-      value: item.monthlyLoss,
-    }));
+    .map((item) => ({ name: item.dust, value: item.monthlyLoss }));
 
   return (
-    <div className="h-screen overflow-y-auto p-4 space-y-10 ">
-      <h2 className="text-2xl font-bold mb-6">🧪 Cooling Impact Analysis</h2>
-
-      {/* Table */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4">📋 Data Table</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300 text-sm text-center">
-            <thead className="bg-gray-100 font-medium text-black">
-              <tr>
-                <th className="border px-4 py-2">Scrap Dust %</th>
-                <th className="border px-4 py-2">Extra Energy Use</th>
-                <th className="border px-4 py-2">Energy (kWh/Ton)</th>
-                <th className="border px-4 py-2">Cost (₹/Ton)</th>
-                <th className="border px-4 py-2">Monthly Loss</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scrapData.map((item, idx) => (
-                <tr key={idx}>
-                  <td className="border px-4 py-2">{item.dust}</td>
-                  <td className="border px-4 py-2">{item.extraEnergy}</td>
-                  <td className="border px-4 py-2">{item.energyKWh}</td>
-                  <td className="border px-4 py-2">₹{item.costPerTon.toLocaleString()}</td>
-                  <td className="border px-4 py-2">
-                    {item.monthlyLoss === 0 ? "–" : `₹${(item.monthlyLoss / 100000).toFixed(2)} Lakh`}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Graphs */}
-      <section>
-        <h3 className="text-xl font-semibold mb-4">📊 Graphs Overview</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-          {/* Cost per Ton Line Chart */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">💰 Cost per Ton vs. Scrap Dust %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={scrapData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dust" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="costPerTon" stroke="#8884d8" name="₹/Ton" />
-              </LineChart>
-            </ResponsiveContainer>
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+        {processStats.map((stat) => (
+          <div
+            key={stat.label}
+            className="flex-1 bg-white shadow rounded-lg p-4"
+            style={{ borderTop: `4px solid ${stat.color}` }}
+          >
+            <h4 className="text-sm font-semibold text-gray-500">{stat.label}</h4>
+            <p className="text-1xl font-bold text-gray-900">{stat.value}</p>
           </div>
+        ))}
+      </div>
 
-          {/* Cost per Ton Bar Chart */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">📊 Bar Chart: Cost per Ton vs Scrap Dust %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={scrapData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dust" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="costPerTon" fill="#8884d8" name="₹/Ton" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h6 className="font-semibold text-gray-700 mb-3">📊 Monthly Cost Comparison</h6>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={savingsForecastData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="manual" fill="#ef4444" name="Manual Cost" />
+            <Bar dataKey="zauvijek" fill="#22c55e" name="Zauvijek Cost" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-          {/* Energy (kWh/Ton) Line Chart */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">⚡ Energy (kWh/Ton) vs. Scrap Dust %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={scrapData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dust" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="energyKWh" stroke="#22c55e" name="kWh/Ton" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Monthly Loss Line Chart */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">💸 Monthly Loss (₹) vs. Scrap Dust %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={scrapData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dust" />
-                <YAxis />
-                <Tooltip formatter={(val) => `₹${(+val / 100000).toFixed(2)} Lakh`} />
-                <Legend />
-                <Line type="monotone" dataKey="monthlyLoss" stroke="#f87171" name="₹ Loss" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Extra Energy Line Chart */}
-          <div>
-            <h4 className="text-lg font-semibold mb-2">🔁 Extra Energy % vs. Scrap Dust %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={scrapData.map((item) => ({
-                  ...item,
-                  extra: parseFloat(item.extraEnergy.replace("+", "").replace("%", "")),
-                }))}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dust" />
-                <YAxis unit="%" />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="extra" stroke="#34d399" name="Extra Energy %" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Pie Chart */}
-          <div className="md:col-span-2">
-            <h4 className="text-lg font-semibold mb-2">🥧 Monthly Loss Share by Scrap %</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={100} label>
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(val) => `₹${(+val / 100000).toFixed(2)} Lakh`} />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </section>
-
-      {/* Combined Hologram Chart */}
-      <section>
-        <h3 className="text-xl font-semibold mb-2">📈 All Metrics vs. Scrap Dust %</h3>
-        <div className="p-6 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/70">
-          <ResponsiveContainer width="100%" height={350}>
-            <LineChart data={scrapData}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h6 className="font-semibold text-gray-700 mb-3">📈 Predictive ROI Over Months (%)</h6>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={predictiveROIData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="dust" />
-              <YAxis />
+              <XAxis dataKey="month" />
+              <YAxis unit="%" />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="energyKWh" stroke="#0ea5e9" name="kWh/Ton" />
-              <Line type="monotone" dataKey="costPerTon" stroke="#a855f7" name="₹/Ton" />
-              <Line type="monotone" dataKey="monthlyLoss" stroke="#f97316" name="₹ Loss" />
+              <Line type="monotone" dataKey="roi" stroke="#3b82f6" name="ROI %" />
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </section>
+
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h6 className="font-semibold text-gray-700 mb-3">⚡ Power Factor Improvement Over Weeks</h6>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={powerFactorData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="week" />
+              <YAxis domain={[0.85, 1]} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="pf" stroke="#16a34a" name="Power Factor" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow">
+        <h6 className="font-semibold text-gray-700 mb-3">🥧 Monthly Loss Share by Scrap %</h6>
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={90} label>
+              {pieData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Legend />
+            <Tooltip formatter={(val) => `₹${(+val / 100000).toFixed(2)} Lakh`} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
-};
-
-export default Coolingviewpage;
+}

@@ -146,77 +146,84 @@ const FishboneDiagram = ({
   categories: { label: string; causes: string[] }[];
 }) => {
   return (
-    <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
-  <h2 className="text-2xl font-bold mb-6 text-center text-white drop-shadow">
-    🐟 Fishbone Diagram – {title}
-  </h2>
-  <svg width="100%" height="460" viewBox="0 0 1000 460">
-    {/* Central Spine */}
-    <line x1="100" y1="230" x2="900" y2="230" stroke="#f1f5f9" strokeWidth="3" />
+    <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-gray-800">
+        🐟 Fishbone Diagram – {title}
+      </h2>
 
-    {/* Category Branches */}
-    {categories.map((cat, index) => {
-      const isTop = index % 2 === 0;
-      const y = isTop ? 140 - index * 7 : 320 + index * 7;
-      const x = 150 + index * 120;
-      const color = CATEGORY_COLORS[cat.label] || "#cbd5e1";
-      const icon = CATEGORY_ICONS[cat.label] || "🔹";
+      <svg width="100%" height="480" viewBox="0 0 1000 480">
+        {/* Central Spine */}
+        <line
+          x1="100"
+          y1="240"
+          x2="900"
+          y2="240"
+          stroke="#334155" // slate-700
+          strokeWidth="3"
+        />
 
-      return (
-        <g key={cat.label}>
-          {/* Branch line */}
-          <line
-            x1={x}
-            y1={230}
-            x2={x - 50}
-            y2={y}
-            stroke={color}
-            strokeWidth="2"
-          />
-          {/* Category label */}
-          <text
-            x={x - 65}
-            y={y - 10}
-            fontSize="13"
-            fontWeight="bold"
-            fill={color}
-            style={{ textShadow: "1px 1px 2px #000" }}
-          >
-            {icon} {cat.label}
-          </text>
-          {/* Causes */}
-          {cat.causes.map((cause, i) => (
-            <text
-              key={i}
-              x={x - 65}
-              y={y + 15 + i * 15}
-              fontSize="11"
-              fill="#e2e8f0"
-              style={{ textShadow: "0.5px 0.5px 1px #000" }}
-            >
-              • {cause}
-            </text>
-          ))}
-        </g>
-      );
-    })}
+        {/* Category Branches */}
+        {categories.map((cat, index) => {
+          const isTop = index % 2 === 0;
+          const y = isTop ? 150 - index * 6 : 330 + index * 6;
+          const x = 150 + index * 120;
+          const color = CATEGORY_COLORS[cat.label] || "#0ea5e9"; // sky-500
+          const icon = CATEGORY_ICONS[cat.label] || "🔹";
 
-    {/* Final node: Process Defect */}
-    <text
-      x="910"
-      y="235"
-      fontSize="16"
-      fontWeight="bold"
-      fill="#f87171"
-      style={{ textShadow: "1px 1px 2px #000" }}
-    >
-      🎯 Process Defect
-    </text>
-  </svg>
-</div>
+          return (
+            <g key={cat.label}>
+              {/* Branch line */}
+              <line
+                x1={x}
+                y1="240"
+                x2={x - 50}
+                y2={y}
+                stroke={color}
+                strokeWidth="2"
+              />
 
+              {/* Category label */}
+              <text
+                x={x - 55}
+                y={y - 10}
+                fontSize="13"
+                fontWeight="bold"
+                fill={color}
+              >
+                {icon} {cat.label}
+              </text>
+
+              {/* Causes */}
+              {cat.causes.map((cause, i) => (
+                <text
+                  key={i}
+                  x={x - 55}
+                  y={y + 15 + i * 16}
+                  fontSize="11"
+                  fill="#334155"
+                >
+                  • {cause}
+                </text>
+              ))}
+            </g>
+          );
+        })}
+
+        {/* Final Node: Process Defect */}
+        <text
+          x="910"
+          y="245"
+          fontSize="16"
+          fontWeight="bold"
+          fill="#dc2626"
+        >
+          🎯 Process Defect
+        </text>
+      </svg>
+    </div>
   );
 };
+
 
 // Main Page
 const FishbonePage = () => {
@@ -224,29 +231,41 @@ const FishbonePage = () => {
   const processList = Object.keys(processFishboneData);
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">🧪 Fishbone Analytics Dashboard</h1>
-
-      <div className="flex items-center gap-4">
-        <label className="text-lg font-medium">Select Process:</label>
-        <select
-          className="bg-gray-900 p-4 rounded-lg"
-          value={selectedProcess}
-          onChange={(e) => setSelectedProcess(e.target.value)}
-        >
-          {processList.map((proc) => (
-            <option key={proc} value={proc}>
-              {proc}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <FishboneDiagram
-        title={selectedProcess}
-        categories={processFishboneData[selectedProcess]}
-      />
+    <div className="p-6 space-y-8 bg-white dark:bg-gray-950 rounded-xl shadow-md">
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      🧪 Fishbone Analytics Dashboard
+    </h1>
+    <div className="flex items-center gap-3">
+      <label
+        htmlFor="process-select"
+        className="text-base font-medium text-gray-700 dark:text-gray-300"
+      >
+        Select Process:
+      </label>
+      <select
+        id="process-select"
+        className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        value={selectedProcess}
+        onChange={(e) => setSelectedProcess(e.target.value)}
+      >
+        {processList.map((proc) => (
+          <option key={proc} value={proc}>
+            {proc}
+          </option>
+        ))}
+      </select>
     </div>
+  </div>
+
+  <div className="mt-6">
+    <FishboneDiagram
+      title={selectedProcess}
+      categories={processFishboneData[selectedProcess]}
+    />
+  </div>
+</div>
+
   );
 };
 

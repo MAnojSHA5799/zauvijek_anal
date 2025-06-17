@@ -8,126 +8,63 @@ const fmeaData = [
     process: "Pattern Making",
     currentCost: 1950,
     optimizedCost: 780,
-    saving: 1170,
     electricityBefore: 3,
     electricityAfter: 1.2,
+    saving: 1170,
     reductionPercent: 60,
   },
   {
     process: "Mold Preparation",
     currentCost: 2925,
     optimizedCost: 1300,
-    saving: 1625,
     electricityBefore: 4.5,
     electricityAfter: 2,
+    saving: 1625,
     reductionPercent: 55.56,
-  },
-  {
-    process: "Assembly of Mold and Gating System",
-    currentCost: 1950,
-    optimizedCost: 780,
-    saving: 1170,
-    electricityBefore: 3,
-    electricityAfter: 1.2,
-    reductionPercent: 60,
   },
   {
     process: "Metal Melting",
     currentCost: 43875,
     optimizedCost: 38350,
-    saving: 5525,
     electricityBefore: 700,
     electricityAfter: 600,
+    saving: 5525,
     reductionPercent: 12.6,
   },
   {
     process: "Tapping",
     currentCost: 4000,
     optimizedCost: 2250,
+    electricityBefore: 4000, // Rs
+    electricityAfter: 2250, // Rs
     saving: 1750,
-    electricityBefore: 100,
-    electricityAfter: 56.25,
     reductionPercent: 43.75,
-  },
-  {
-    process: "Purification",
-    currentCost: 3900,
-    optimizedCost: 2275,
-    saving: 1625,
-    electricityBefore: 70,
-    electricityAfter: 40,
-    reductionPercent: 41.67,
   },
   {
     process: "Pouring",
     currentCost: 4550,
     optimizedCost: 2925,
-    saving: 1625,
     electricityBefore: 80,
     electricityAfter: 50,
+    saving: 1625,
     reductionPercent: 35.71,
-  },
-  {
-    process: "Rough Casting",
-    currentCost: 2112.5,
-    optimizedCost: 1137.5,
-    saving: 975,
-    electricityBefore: 35,
-    electricityAfter: 20,
-    reductionPercent: 46.16,
   },
   {
     process: "Cooling",
     currentCost: 1462.5,
     optimizedCost: 877.5,
-    saving: 585,
     electricityBefore: 25,
     electricityAfter: 15,
+    saving: 585,
     reductionPercent: 40,
   },
   {
-    process: "Solidification",
-    currentCost: 585,
-    optimizedCost: 292.5,
-    saving: 292.5,
-    electricityBefore: 10,
-    electricityAfter: 5,
-    reductionPercent: 50,
-  },
-  {
-    process: "Risers",
-    currentCost: 455,
-    optimizedCost: 227.5,
-    saving: 227.5,
-    electricityBefore: 8,
-    electricityAfter: 4,
-    reductionPercent: 50,
-  },
-  {
-    process: "Shakeout",
-    currentCost: 292.5,
-    optimizedCost: 162.5,
-    saving: 130,
-    electricityBefore: 5,
-    electricityAfter: 3,
-    reductionPercent: 44.4,
-  },
-  {
-    process: "Shot Blasting (Mold Breaking)",
-    currentCost: 422.5,
-    optimizedCost: 227.5,
-    saving: 195,
-    electricityBefore: 7,
-    electricityAfter: 4,
-    reductionPercent: 46.1,
-  },
-  {
-    process: "Fettling, Trimming & Finishing",
+    process: "Fettling",
     currentCost: 715,
     optimizedCost: 422.5,
-    saving: 292.5,
     electricityBefore: 12,
     electricityAfter: 7,
+    saving: 292.5,
     reductionPercent: 40.9,
   },
 ];
@@ -140,20 +77,22 @@ const FMEAAnalysis = () => {
       ? fmeaData
       : fmeaData.filter((item) => item.process === selected);
 
-  const processes = ["All", ...fmeaData.map((item) => item.process)];
+  const processes = ["All", ...new Set(fmeaData.map((item) => item.process))];
 
   return (
-    <div className="p-6 md:p-10 bg-gray-900 text-white rounded-xl shadow-xl space-y-8">
-      <h1 className="text-3xl font-bold text-center text-teal-400">
+    <div className="p-6 md:p-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl shadow-xl space-y-8">
+      <h1 className="text-3xl font-bold text-center text-teal-600 dark:text-teal-400">
         ⚙️ FMEA ROI & Energy Impact
       </h1>
 
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <label className="text-sm font-semibold">Select Process:</label>
+        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+          Select Process:
+        </label>
         <select
           value={selected}
           onChange={(e) => setSelected(e.target.value)}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-teal-500 focus:outline-none"
+          className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-4 py-2 rounded-lg border border-teal-500 focus:outline-none"
         >
           {processes.map((proc) => (
             <option key={proc} value={proc}>
@@ -167,22 +106,22 @@ const FMEAAnalysis = () => {
         {filteredData.map((item) => (
           <div
             key={item.process}
-            className="bg-gradient-to-br from-gray-800 to-gray-700 p-6 rounded-xl border border-gray-600 shadow-md hover:shadow-lg transition duration-300 space-y-4"
+            className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 rounded-xl border border-gray-300 dark:border-gray-600 shadow-md hover:shadow-lg transition duration-300 space-y-4"
           >
-            <h2 className="text-xl font-bold text-orange-400">
+            <h2 className="text-xl font-bold text-orange-500">
               {item.process}
             </h2>
 
             <div className="space-y-1 text-sm">
               <p>
                 💰 <span className="font-medium">Cost Saving:</span>{" "}
-                <span className="text-green-400 font-semibold">
+                <span className="text-green-600 dark:text-green-400 font-semibold">
                   ₹{item.saving.toLocaleString()}
                 </span>
               </p>
               <p>
                 ⚡ <span className="font-medium">Electricity:</span>{" "}
-                <span className="text-blue-400">
+                <span className="text-blue-600 dark:text-blue-400">
                   {item.electricityBefore} → {item.electricityAfter} kWh
                 </span>
               </p>
@@ -191,8 +130,8 @@ const FMEAAnalysis = () => {
                 <span
                   className={`font-bold ${
                     item.reductionPercent >= 50
-                      ? "text-green-500"
-                      : "text-yellow-400"
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-yellow-600 dark:text-yellow-400"
                   }`}
                 >
                   {item.reductionPercent}%
@@ -201,8 +140,8 @@ const FMEAAnalysis = () => {
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-gray-300 font-medium">ROI Bar</p>
-              <div className="w-full bg-gray-600 h-4 rounded-lg overflow-hidden">
+              <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">ROI Bar</p>
+              <div className="w-full bg-gray-300 dark:bg-gray-600 h-4 rounded-lg overflow-hidden">
                 <motion.div
                   className="h-4 bg-emerald-500"
                   initial={{ width: 0 }}
@@ -215,10 +154,10 @@ const FMEAAnalysis = () => {
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-gray-300 font-medium">
+              <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">
                 Electricity Usage Bar
               </p>
-              <div className="w-full bg-gray-600 h-4 rounded-lg overflow-hidden">
+              <div className="w-full bg-gray-300 dark:bg-gray-600 h-4 rounded-lg overflow-hidden">
                 <motion.div
                   className="h-4 bg-blue-500"
                   initial={{ width: 0 }}

@@ -21,14 +21,14 @@ export const navItems: NavItem[] = [
     shortcut: ["d", "d"],
     items: [], // Empty array as there are no child items for Dashboard
   },
-  {
-    title: "New Dashboard",
-    url: "/dashboard/new",
-    icon: "dashboard",
-    isActive: false,
-    shortcut: ["d", "d"],
-    items: [], // Empty array as there are no child items for Dashboard
-  },
+  // {
+  //   title: "New Dashboard",
+  //   url: "/dashboard/new",
+  //   icon: "dashboard",
+  //   isActive: false,
+  //   shortcut: ["d", "d"],
+  //   items: [], // Empty array as there are no child items for Dashboard
+  // },
     {
     title: "Data Management",
     url: "/dashboard/data-management",
@@ -37,22 +37,7 @@ export const navItems: NavItem[] = [
     shortcut: ["d", "d"],
     items: [], // Empty array as there are no child items for Dashboard
   },
-  {
-    title: "Fishbone Analysis",
-    url: "/dashboard/fishbone",
-    icon: "dashboard",
-    isActive: false,
-    shortcut: ["d", "d"],
-    items: [], // Empty array as there are no child items for Dashboard
-  },
-   {
-    title: "FEMA Analysis",
-    url: "/dashboard/FMEA-Analysis",
-    icon: "dashboard",
-    isActive: false,
-    shortcut: ["d", "d"],
-    items: [], // Empty array as there are no child items for Dashboard
-  },
+
   // {
   //   title: "Users",
   //   url: "/dashboard/users",
@@ -61,15 +46,6 @@ export const navItems: NavItem[] = [
   //   isActive: false,
   //   items: [], // No child items
   // },
-{
-  title: "Scrap",
-  url: "/dashboard/Scrap",
-  icon: "trash", // Changed from "user" to "trash"
-  shortcut: ["p", "p"],
-  isActive: false,
-  items: [],
-},
-
    {
     title: "Pattern Making",
     url: "/dashboard/pattern-making",
@@ -144,6 +120,14 @@ export const navItems: NavItem[] = [
     items: [], // No child items
   },
   {
+  title: "Scrap",
+  url: "/dashboard/Scrap",
+  icon: "trash", // Changed from "user" to "trash"
+  shortcut: ["p", "p"],
+  isActive: false,
+  items: [],
+},
+  {
     title: "Solidification",
     url: "/dashboard/Solidification",
     icon: "user",
@@ -182,6 +166,22 @@ export const navItems: NavItem[] = [
     shortcut: ["p", "p"],
     isActive: false,
     items: [], // No child items
+  },
+    {
+    title: "Fishbone Analysis",
+    url: "/dashboard/fishbone",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
+   {
+    title: "FEMA Analysis",
+    url: "/dashboard/FMEA-Analysis",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
   },
   {
     title: "Account",
