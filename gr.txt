@@ -1,0 +1,27 @@
+| #  | Process                       | Expense Without Zauvijek (₹) | Expense With Zauvijek (₹) | **Saving (₹)** | **Electricity Cost Reduction (%)** |
+| -- | ----------------------------- | ---------------------------- | ------------------------- | -------------- | ---------------------------------- |
+| 1  | Pattern Making                | ₹487.5                       | ₹195                      | ₹292.5         | 60%                                |
+| 2  | Mold Preparation              | ₹731.25                      | ₹325                      | ₹406.25        | 55.56%                             |
+| 3  | Assembly of Mold & Gating     | ₹487.5                       | ₹195                      | ₹292.5         | 60%                                |
+| 4  | Metal Melting                 | ₹10,968.75                   | ₹9,587.5                  | ₹1,381.25      | 12.6%                              |
+| 5  | Tapping                       | ₹1,000                       | ₹562.5                    | ₹437.5         | 43.75%                             |
+| 6  | Purification                  | ₹975                         | ₹568.75                   | ₹406.25        | 41.67%                             |
+| 7  | Pouring                       | ₹1,137.5                     | ₹731.25                   | ₹406.25        | 35.71%                             |
+| 8  | Rough Casting                 | ₹528.13                      | ₹284.38                   | ₹243.75        | 46.16%                             |
+| 9  | Cooling                       | ₹365.63                      | ₹219.38                   | ₹146.25        | 40%                                |
+| 10 | Solidification                | ₹146.25                      | ₹73.13                    | ₹73.13         | 50%                                |
+| 11 | Risers                        | ₹113.75                      | ₹56.88                    | ₹56.88         | 50%                                |
+| 12 | Shakeout                      | ₹73.13                       | ₹40.63                    | ₹32.5          | 44.4%                              |
+| 13 | Mold Breaking (Shot Blasting) | ₹105.63                      | ₹56.88                    | ₹48.75         | 46.1%                              |
+| 14 | Fettling & Finishing          | ₹178.75                      | ₹105.63                   | ₹73.13         | 40.9%                              |
+
+
+
+Total Summary (for 1,500 units)
+🔌 Total Electricity Expense Without Zauvijek: ₹17,308.75
+
+💡 Total Electricity Expense With Zauvijek: ₹12,457.88
+
+💰 Total Saving: ₹4,850.88
+
+📉 Average Electricity Cost Reduction: ~28%
