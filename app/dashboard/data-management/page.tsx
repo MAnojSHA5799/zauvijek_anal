@@ -47,11 +47,11 @@ const DataManagementviewpage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">📋 Data Management</h1>
+    <div className="p-2">
+      {/* <h1 className="text-2xl font-bold mb-4">📋 Data Management</h1> */}
 
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-red-500 text-white px-3 py-1 rounded">Modify Filters</button>
+        <button className="bg-blue-500 text-white px-3 py-1 rounded">Modify Filters</button>
         <div className="text-right">
           <p>Line Name : <strong>NLO</strong></p>
           <p>Category : <strong>Prepared Sand</strong></p>
@@ -92,19 +92,19 @@ const DataManagementviewpage = () => {
 
       <div className="mt-6 flex gap-4">
         <button
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
           onClick={() => handleSave("addNew")}
         >
           Save & Add New
         </button>
         <button
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
           onClick={() => handleSave("close")}
         >
           Save & Close
         </button>
         <button
-          className="bg-gray-300 text-black px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
           onClick={() => alert("🚫 Cancelled")}
         >
           Cancel

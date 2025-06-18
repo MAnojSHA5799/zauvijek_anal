@@ -29,14 +29,7 @@ export const navItems: NavItem[] = [
   //   shortcut: ["d", "d"],
   //   items: [], // Empty array as there are no child items for Dashboard
   // },
-    {
-    title: "Data Management",
-    url: "/dashboard/data-management",
-    icon: "dashboard",
-    isActive: false,
-    shortcut: ["d", "d"],
-    items: [], // Empty array as there are no child items for Dashboard
-  },
+   
 
   // {
   //   title: "Users",
@@ -184,12 +177,42 @@ export const navItems: NavItem[] = [
     items: [], // Empty array as there are no child items for Dashboard
   },
   {
+    title: "Data Management",
+    url: "/dashboard/data-management", // Placeholder as there is no direct link for the parent
+    icon: "billing",
+    isActive: true,
+
+    items: [
+       {
+    title: "Data Storage",
+    url: "/dashboard/data-management",
+    icon: "dashboard",
+    isActive: false,
+    shortcut: ["d", "d"],
+    items: [], // Empty array as there are no child items for Dashboard
+  },
+      {
+        title: "Process Changes",
+        url: "/dashboard/process-changes",
+        icon: "userPen",
+        shortcut: ["m", "m"],
+      },
+      {
+        title: "System Changes",
+        shortcut: ["l", "l"],
+        url: "/dashboard/system-changes",
+        icon: "login",
+      },
+    ],
+  },
+{
     title: "Account",
     url: "#", // Placeholder as there is no direct link for the parent
     icon: "billing",
     isActive: true,
 
     items: [
+      
       {
         title: "Profile",
         url: "/dashboard/profile",
@@ -204,6 +227,7 @@ export const navItems: NavItem[] = [
       },
     ],
   },
+
   {
     title: "Kanban",
     url: "/dashboard/kanban",

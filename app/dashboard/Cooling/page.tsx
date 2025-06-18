@@ -1,143 +1,232 @@
 "use client";
 
-import React from "react";
 import {
-  LineChart,
-  Line,
+  ResponsiveContainer,
+  BarChart,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
+  Bar,
+  CartesianGrid,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar,
+  ComposedChart,
 } from "recharts";
+import { useState } from "react";
 
-const processStats = [
-  { label: "Processes Name", value: "Cooling", color: "#3B82F6" },
-  { label: "Electricity Saved", value: "₹585", color: "#10B981" },
-  { label: "Carbon Reduced", value: "~40%", color: "#22C55E" },
-  { label: "Total Rejections", value: "Reduced", color: "#EF4444" },
-  { label: "Total Savings", value: "₹585", color: "#F59E0B" },
+const getLast10Days = () => {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const today = new Date();
+  const result = [];
+
+  for (let i = 0; i < 10; i++) {
+    const date = new Date();
+    date.setDate(today.getDate() + i);
+    result.push(days[date.getDay()]);
+  }
+
+  return result;
+};
+
+type FilterType = "daily" | "weekly" | "monthly" | "yearly";
+const dynamicDays = getLast10Days();
+
+const allData = {
+  daily: {
+    electricityData: dynamicDays.map((day, index) => ({
+      name: day,
+      before: 36 - index * 0.2,
+      after: 22 - index * 0.2,
+    })),
+    co2Data: dynamicDays.map((day, index) => ({
+      name: day,
+      saved: 1.3 + (index % 3) * 0.2,
+    })),
+    pieData: [
+      { name: "Before Zauvijek", value: 365.63 },
+      { name: "With Zauvijek", value: 219.38 },
+    ],
+  },
+  weekly: {
+    electricityData: [
+      { name: "Week 1", before: 200, after: 120 },
+      { name: "Week 2", before: 165.63, after: 99.38 },
+    ],
+    co2Data: [
+      { name: "Week 1", saved: 6.3 },
+      { name: "Week 2", saved: 6.87 },
+    ],
+    pieData: [
+      { name: "Before Zauvijek", value: 365.63 },
+      { name: "With Zauvijek", value: 219.38 },
+    ],
+  },
+  monthly: {
+    electricityData: [
+      { name: "Cooling", before: 365.63, after: 219.38 },
+    ],
+    co2Data: [
+      { name: "Cooling", saved: 13.17 },
+    ],
+    pieData: [
+      { name: "Before Zauvijek", value: 365.63 },
+      { name: "With Zauvijek", value: 219.38 },
+    ],
+  },
+  yearly: {
+    electricityData: [
+      { name: "Cooling", before: 4387.56, after: 2632.56 },
+    ],
+    co2Data: [
+      { name: "Cooling", saved: 158.04 },
+    ],
+    pieData: [
+      { name: "Before Zauvijek", value: 4387.56 },
+      { name: "With Zauvijek", value: 2632.56 },
+    ],
+  },
+};
+
+const sampleData1 = [
+  { name: "Jan", production: 300, current: 180 },
+  { name: "Feb", production: 280, current: 160 },
+  { name: "Mar", production: 320, current: 190 },
+  { name: "Apr", production: 340, current: 200 },
+  { name: "May", production: 290, current: 170 },
+  { name: "Jun", production: 310, current: 185 },
 ];
 
-const scrapData = [
-  { dust: "0%", extraEnergy: "0%", energyKWh: 15, costPerTon: 877.5, monthlyLoss: 0 },
-  { dust: "1%", extraEnergy: "+2%", energyKWh: 16, costPerTon: 900, monthlyLoss: 8000 },
-  { dust: "3%", extraEnergy: "+6%", energyKWh: 18, costPerTon: 950, monthlyLoss: 18000 },
-  { dust: "5%", extraEnergy: "+10%", energyKWh: 20, costPerTon: 1000, monthlyLoss: 30000 },
-];
+const COLORS = ["#F97316", "#10B981"];
 
-const savingsForecastData = [
-  { month: "Jan", manual: 1462.5, zauvijek: 877.5 },
-  { month: "Feb", manual: 1450, zauvijek: 865 },
-  { month: "Mar", manual: 1435, zauvijek: 850 },
-  { month: "Apr", manual: 1420, zauvijek: 835 },
-  { month: "May", manual: 1405, zauvijek: 820 },
-  { month: "Jun", manual: 1390, zauvijek: 805 },
-];
-
-const predictiveROIData = [
-  { month: "Jan", roi: 7 },
-  { month: "Feb", roi: 8 },
-  { month: "Mar", roi: 9 },
-  { month: "Apr", roi: 10 },
-  { month: "May", roi: 11 },
-  { month: "Jun", roi: 12 },
-];
-
-const powerFactorData = [
-  { week: "W1", pf: 0.88 },
-  { week: "W2", pf: 0.89 },
-  { week: "W3", pf: 0.91 },
-  { week: "W4", pf: 0.93 },
-  { week: "W5", pf: 0.94 },
-  { week: "W6", pf: 0.95 },
-];
-
-const COLORS = ["#22c55e", "#3b82f6", "#f97316", "#ef4444"];
-
-export default function Coolingviewpage() {
-  const pieData = scrapData
-    .filter((item) => item.monthlyLoss > 0)
-    .map((item) => ({ name: item.dust, value: item.monthlyLoss }));
+export default function CoolingViewPage() {
+  const [filter, setFilter] = useState<FilterType>("daily");
+  const { electricityData, co2Data, pieData } = allData[filter];
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-        {processStats.map((stat) => (
-          <div
-            key={stat.label}
-            className="flex-1 bg-white shadow rounded-lg p-4"
-            style={{ borderTop: `4px solid ${stat.color}` }}
-          >
-            <h4 className="text-sm font-semibold text-gray-500">{stat.label}</h4>
-            <p className="text-1xl font-bold text-gray-900">{stat.value}</p>
-          </div>
-        ))}
+    <div className="space-y-4 mb-5">
+      <div className="flex justify-end mb-2">
+        <select
+          className="p-2 border rounded"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as FilterType)}
+        >
+          <option value="daily">Last 10 Days</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
       </div>
 
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h6 className="font-semibold text-gray-700 mb-3">📊 Monthly Cost Comparison</h6>
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={savingsForecastData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-3">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">Processes Name</div>
+          <div className="text-sm">Cooling</div>
+        </div>
+
+        <div className="bg-gradient-to-r from-gray-700 to-gray-500 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">Electricity Saved</div>
+          <div className="text-sm">₹146.25</div>
+        </div>
+
+        <div className="bg-gradient-to-r from-sky-700 to-sky-500 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">CO₂ Reduced</div>
+          <div className="text-sm">13.17 kg</div>
+        </div>
+
+        <div className="bg-gradient-to-r from-rose-600 to-red-500 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">Total Rejections</div>
+          <div className="text-sm">Reduced</div>
+        </div>
+
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">Without Zauvijek</div>
+          <div className="text-sm">₹365.63</div>
+        </div>
+
+        <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-3 rounded-xl text-white shadow">
+          <div className="text-xl font-semibold">With Zauvijek</div>
+          <div className="text-sm">₹219.38</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
+          <h4 className="h6 mb-3">Electricity: Before vs After Zauvijek</h4>
+          <ResponsiveContainer width="100%" height="90%">
+            <BarChart data={electricityData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip formatter={(value) => `₹${value}`} />
+              <Legend />
+              <Bar dataKey="before" fill="#F97316" name="Before Zauvijek" />
+              <Bar dataKey="after" fill="#10B981" name="With Zauvijek" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
+          <h4 className="h6 mb-3">Electricity</h4>
+          <ResponsiveContainer width="100%" height="90%">
+            <LineChart data={electricityData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="before" stroke="#F97316" name="Before Zauvijek" />
+              <Line type="monotone" dataKey="after" stroke="#10B981" name="With Zauvijek" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
+          <h4 className="h6 mb-3">CO₂ Savings</h4>
+          <ResponsiveContainer width="100%" height="90%">
+            <AreaChart data={co2Data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Area type="monotone" dataKey="saved" stroke="#10B981" fill="#A7F3D0" name="CO₂ Saved (kg)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
+          <h4 className="h6 mb-3">Electricity Split</h4>
+          <ResponsiveContainer width="100%" height="90%">
+            <PieChart>
+              <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value" label>
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl p-4 shadow-md h-[440px]">
+        <h4 className="h6 mb-3">Monthly Consumption</h4>
+        <ResponsiveContainer width="100%" height={400}>
+          <ComposedChart data={sampleData1} margin={{ top: 20, right: 30, left: 0, bottom: 50 }}>
+            <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" height={70} />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="manual" fill="#ef4444" name="Manual Cost" />
-            <Bar dataKey="zauvijek" fill="#22c55e" name="Zauvijek Cost" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h6 className="font-semibold text-gray-700 mb-3">📈 Predictive ROI Over Months (%)</h6>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={predictiveROIData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis unit="%" />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="roi" stroke="#3b82f6" name="ROI %" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h6 className="font-semibold text-gray-700 mb-3">⚡ Power Factor Improvement Over Weeks</h6>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={powerFactorData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="week" />
-              <YAxis domain={[0.85, 1]} />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="pf" stroke="#16a34a" name="Power Factor" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h6 className="font-semibold text-gray-700 mb-3">🥧 Monthly Loss Share by Scrap %</h6>
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={90} label>
-              {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Legend />
-            <Tooltip formatter={(val) => `₹${(+val / 100000).toFixed(2)} Lakh`} />
-          </PieChart>
+            <Bar dataKey="production" name="Production" fill="#10b981" barSize={20} />
+            <Line dataKey="current" name="Current" type="monotone" stroke="#fbbf24" strokeWidth={2} dot />
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
     </div>
