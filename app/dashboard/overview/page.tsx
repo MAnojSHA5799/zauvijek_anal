@@ -468,7 +468,7 @@ const OverviewPage = () => {
 
         {/* Total Savings */}
         <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Total Savings</div>
+          <div className="text-xl font-semibold">Total Savings (Monthly)</div>
           <div className="text-sm">₹1,486,130.00</div>
         </div>
       </div>
