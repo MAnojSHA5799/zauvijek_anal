@@ -48,9 +48,9 @@ import { useUserdetails } from "@/hooks/use-userdetails";
 import { signOut } from "@/lib/actions";
 
 export const company = {
-  name: "Zauvijek Pvt Ltd",
+  name: "Zauvijek Automation",
   logo: GalleryVerticalEnd,
-  plan: "Automation",
+  // plan: "Automation",
 };
 
 export default function AppSidebar({ token }: { token: string }) {
@@ -61,7 +61,10 @@ export default function AppSidebar({ token }: { token: string }) {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar
+  collapsible="icon"
+  
+>
       <SidebarHeader>
         <div className="flex gap-2 py-2 text-sidebar-accent-foreground">
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
@@ -69,14 +72,15 @@ export default function AppSidebar({ token }: { token: string }) {
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">{company.name}</span>
-            <span className="truncate text-xs">{company.plan}</span>
+            {/* <span className="truncate text-xs">{company.plan}</span> */}
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent className="overflow-x-hidden">
+      <SidebarContent className="overflow-x-hidden" >
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
-          <SidebarMenu className="p-0 m-0">
+          <SidebarMenu className="p-0 m-0" 
+           >
             {navItems.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
               return item?.items && item?.items?.length > 0 ? (

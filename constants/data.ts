@@ -56,7 +56,7 @@ export const navItems: NavItem[] = [
     items: [], // No child items
   },
        {
-    title: "Negligible Mold",
+    title: "Assembly of Mold & Gating",
     url: "/dashboard/negligible-mold",
     icon: "user",
     shortcut: ["p", "p"],

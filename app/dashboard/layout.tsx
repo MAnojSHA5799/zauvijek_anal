@@ -5,7 +5,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 // app/layout.tsx
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata: Metadata = {
   title: "Next Shadcn Dashboard Starter",
@@ -27,9 +27,7 @@ export default async function DashboardLayout({
         <AppSidebar token={token} />
         <SidebarInset>
           <Header token={token} />
-          {/* page main content */}
           {children}
-          {/* page main content ends */}
         </SidebarInset>
       </SidebarProvider>
     </KBar>
