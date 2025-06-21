@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
-const COLORS = ["#F97316", "#10B981"]
+const COLORS = ["#1e7348", "#10B981"]
 
 interface TappingData {
   processName: string
@@ -318,16 +318,16 @@ export default function TappingCharts() {
                 formatter={(value, name) => [`₹${Number(value).toLocaleString()}`, name]}
               />
               <Legend />
-              <Bar dataKey="Manual" fill="#EF4444" name="Manual Process" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Manual" fill="#3722f5" name="Manual Process" radius={[4, 4, 0, 0]} />
               <Bar dataKey="Zauvijek" fill="#3B82F6" name="With Zauvijek" radius={[4, 4, 0, 0]} />
               <Line
                 type="monotone"
                 dataKey="Saving"
                 stroke="#10B981"
-                strokeWidth={3}
+                strokeWidth={1}
                 name="Daily Savings"
                 dot={{ fill: "#10B981", strokeWidth: 2, r: 5 }}
-                activeDot={{ r: 7, stroke: "#10B981", strokeWidth: 2 }}
+                activeDot={{ r: 8, stroke: "#10B981", strokeWidth: 2 }}
               />
             </ComposedChart>
           </ResponsiveContainer>
@@ -345,7 +345,7 @@ export default function TappingCharts() {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ name, value, percent }) => `${name}: ${value} kWh (${(percent * 100).toFixed(1)}%)`}
+                label={({value }) => `${value} kWh`}
                 labelLine={false}
               >
                 {pieChartData.map((entry, index) => (
@@ -354,7 +354,7 @@ export default function TappingCharts() {
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1F2937",
+                  backgroundColor: "white",
                   border: "none",
                   borderRadius: "8px",
                   color: "#F9FAFB",
@@ -365,7 +365,7 @@ export default function TappingCharts() {
           </ResponsiveContainer>
 
           {/* Energy Savings Summary */}
-          <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <div className="mt-0 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="text-center">
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Energy Saved Daily</div>
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
