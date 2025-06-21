@@ -161,6 +161,30 @@ export const navItems: NavItem[] = [
     items: [], // No child items
   },
     {
+    title: "Heat Process",
+    url: "/dashboard/heat-process",
+    icon: "user",
+    shortcut: ["p", "p"],
+    isActive: false,
+    items: [], // No child items
+  },
+     {
+    title: "Vibration",
+    url: "/dashboard/Vibration",
+    icon: "user",
+    shortcut: ["p", "p"],
+    isActive: false,
+    items: [], // No child items
+  },
+      {
+    title: "Net Zero",
+    url: "/dashboard/Net-Zero",
+    icon: "user",
+    shortcut: ["p", "p"],
+    isActive: false,
+    items: [], // No child items
+  },
+    {
     title: "Fishbone Analysis",
     url: "/dashboard/fishbone",
     icon: "dashboard",

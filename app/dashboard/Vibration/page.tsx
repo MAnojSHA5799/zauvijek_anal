@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import {
   ResponsiveContainer,
@@ -14,17 +15,16 @@ import {
   Cell,
   ComposedChart,
 } from "recharts"
-import { FaIndustry, FaRupeeSign, FaChartLine, FaBolt } from "react-icons/fa"
-import { MdSavings, MdCalendarToday } from "react-icons/md"
+import { Activity, IndianRupee, TrendingUp, Zap, PiggyBank, Calendar, Waves } from "lucide-react"
 import CountUp from "react-countup"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
-const COLORS = ["#F97316", "#10B981", "#3B82F6", "#EF4444", "#8B5CF6"]
+const COLORS = ["#8B5CF6", "#10B981"]
 
-interface PouringData {
+interface VibrationData {
   processName: string
   withoutZauvijek: number
   withZauvijek: number
@@ -37,21 +37,21 @@ interface PouringData {
   energySaved: number
 }
 
-export default function PouringCharts() {
-  const [formData, setFormData] = useState<PouringData>({
-    processName: "Pouring",
-    withoutZauvijek: 1137.5,
-    withZauvijek: 731.25,
-    dailySaving: 406.25,
-    monthlySaving: 12187.5,
-    yearlySaving: 148281.25,
-    costReduction: 35.71,
-    energyBefore: 102.38,
-    energyWithZauvijek: 65.81,
-    energySaved: 36.56,
+const Vibration = () => {
+  const [formData, setFormData] = useState<VibrationData>({
+    processName: "Vibration",
+    withoutZauvijek: 625.0,
+    withZauvijek: 387.5,
+    dailySaving: 237.5,
+    monthlySaving: 7125.0,
+    yearlySaving: 85312.5,
+    costReduction: 38.0,
+    energyBefore: 56.25,
+    energyWithZauvijek: 34.88,
+    energySaved: 21.37,
   })
 
-  const handleInputChange = (field: keyof PouringData, value: string) => {
+  const handleInputChange = (field: keyof VibrationData, value: string) => {
     const numValue = Number.parseFloat(value) || 0
     setFormData((prev) => {
       const updated = { ...prev, [field]: numValue }
@@ -77,22 +77,22 @@ export default function PouringCharts() {
       title: "Process Name",
       value: formData.processName,
       isCurrency: false,
-      colors: "from-blue-600 to-blue-500",
-      icon: <FaIndustry className="text-2xl" />,
+      colors: "from-purple-600 to-violet-500",
+      icon: <Activity className="w-6 h-6" />,
     },
     {
       title: "Without Zauvijek",
       value: formData.withoutZauvijek,
       isCurrency: true,
-      colors: "from-blue-700 to-blue-500",
-      icon: <FaRupeeSign className="text-2xl" />,
+      colors: "from-purple-700 to-purple-500",
+      icon: <IndianRupee className="w-6 h-6" />,
     },
     {
       title: "With Zauvijek",
       value: formData.withZauvijek,
       isCurrency: true,
-      colors: "from-sky-700 to-sky-500",
-      icon: <FaRupeeSign className="text-2xl" />,
+      colors: "from-violet-700 to-violet-500",
+      icon: <IndianRupee className="w-6 h-6" />,
     },
     {
       title: "Avg. Cost Reduction",
@@ -100,8 +100,8 @@ export default function PouringCharts() {
       suffix: "%",
       isCurrency: false,
       decimals: 2,
-      colors: "from-rose-600 to-red-500",
-      icon: <FaChartLine className="text-2xl" />,
+      colors: "from-rose-600 to-pink-500",
+      icon: <TrendingUp className="w-6 h-6" />,
     },
     {
       title: "Electricity Saved",
@@ -110,7 +110,7 @@ export default function PouringCharts() {
       isCurrency: false,
       decimals: 2,
       colors: "from-emerald-600 to-emerald-400",
-      icon: <FaBolt className="text-2xl" />,
+      icon: <Zap className="w-6 h-6" />,
     },
     {
       title: "Total Saving (Per Day)",
@@ -118,21 +118,21 @@ export default function PouringCharts() {
       isCurrency: true,
       decimals: 2,
       colors: "from-yellow-500 to-orange-400",
-      icon: <MdSavings className="text-2xl" />,
+      icon: <PiggyBank className="w-6 h-6" />,
     },
     {
       title: "Monthly Saving",
       value: formData.monthlySaving,
       isCurrency: true,
       colors: "from-indigo-600 to-indigo-400",
-      icon: <MdCalendarToday className="text-2xl" />,
+      icon: <Calendar className="w-6 h-6" />,
     },
     {
       title: "Yearly Saving",
       value: formData.yearlySaving,
       isCurrency: true,
       colors: "from-teal-600 to-teal-400",
-      icon: <MdCalendarToday className="text-2xl" />,
+      icon: <Calendar className="w-6 h-6" />,
     },
   ]
 
@@ -156,120 +156,19 @@ export default function PouringCharts() {
     { name: "With Zauvijek", value: formData.energyWithZauvijek },
   ]
 
-  // Box plot data - simulating cost distribution across different scenarios
-  const costBoxPlotData = [
-    {
-      category: "Manual Process",
-      min: formData.withoutZauvijek * 0.85,
-      q1: formData.withoutZauvijek * 0.92,
-      median: formData.withoutZauvijek,
-      q3: formData.withoutZauvijek * 1.08,
-      max: formData.withoutZauvijek * 1.15,
-      outliers: [formData.withoutZauvijek * 1.25, formData.withoutZauvijek * 0.75],
-    },
-    {
-      category: "With Zauvijek",
-      min: formData.withZauvijek * 0.88,
-      q1: formData.withZauvijek * 0.94,
-      median: formData.withZauvijek,
-      q3: formData.withZauvijek * 1.06,
-      max: formData.withZauvijek * 1.12,
-      outliers: [formData.withZauvijek * 1.2, formData.withZauvijek * 0.8],
-    },
-  ]
-
-  // Energy consumption box plot data
-  const energyBoxPlotData = [
-    {
-      category: "Before Zauvijek",
-      min: formData.energyBefore * 0.9,
-      q1: formData.energyBefore * 0.95,
-      median: formData.energyBefore,
-      q3: formData.energyBefore * 1.05,
-      max: formData.energyBefore * 1.1,
-      outliers: [formData.energyBefore * 1.18, formData.energyBefore * 0.82],
-    },
-    {
-      category: "After Zauvijek",
-      min: formData.energyWithZauvijek * 0.92,
-      q1: formData.energyWithZauvijek * 0.96,
-      median: formData.energyWithZauvijek,
-      q3: formData.energyWithZauvijek * 1.04,
-      max: formData.energyWithZauvijek * 1.08,
-      outliers: [formData.energyWithZauvijek * 1.15, formData.energyWithZauvijek * 0.85],
-    },
-  ]
-
-  // Custom Box Plot Component
-  // const CustomBoxPlot = ({ data, title, yAxisLabel, color }: any) => (
-  //   <div className="bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow-lg">
-  //     <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">{title}</h2>
-  //     <ResponsiveContainer width="100%" height={300}>
-  //       <ScatterChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-  //         <CartesianGrid strokeDasharray="3 3" />
-  //         <XAxis type="category" dataKey="category" domain={data.map((d: any) => d.category)} tick={{ fontSize: 12 }} />
-  //         <YAxis
-  //           type="number"
-  //           tick={{ fontSize: 12 }}
-  //           label={{ value: yAxisLabel, angle: -90, position: "insideLeft" }}
-  //         />
-  //         <Tooltip formatter={(value, name) => [typeof value === "number" ? value.toFixed(2) : value, name]} />
-  //         {data.map((item: any, index: number) => (
-  //           <g key={index}>
-  //             {/* Box */}
-  //             <rect
-  //               x={index * 100 + 50}
-  //               y={item.q1}
-  //               width={50}
-  //               height={item.q3 - item.q1}
-  //               fill={color}
-  //               fillOpacity={0.6}
-  //               stroke={color}
-  //               strokeWidth={2}
-  //             />
-  //             {/* Median line */}
-  //             <line
-  //               x1={index * 100 + 50}
-  //               y1={item.median}
-  //               x2={index * 100 + 100}
-  //               y2={item.median}
-  //               stroke={color}
-  //               strokeWidth={3}
-  //             />
-  //             {/* Whiskers */}
-  //             <line
-  //               x1={index * 100 + 75}
-  //               y1={item.min}
-  //               x2={index * 100 + 75}
-  //               y2={item.q1}
-  //               stroke={color}
-  //               strokeWidth={2}
-  //             />
-  //             <line
-  //               x1={index * 100 + 75}
-  //               y1={item.q3}
-  //               x2={index * 100 + 75}
-  //               y2={item.max}
-  //               stroke={color}
-  //               strokeWidth={2}
-  //             />
-  //           </g>
-  //         ))}
-  //       </ScatterChart>
-  //     </ResponsiveContainer>
-  //   </div>
-  // )
-
   return (
     <div className="min-h-screen bg-white dark:bg-[#0f1422] text-black dark:text-white p-6 mb-5 transition-colors duration-300">
       {/* Data Input Form */}
-      
+     
 
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Pouring Process Analytics</h1>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-3">
+          <Activity className="w-8 h-8 text-purple-500" />
+          Vibration Process Analytics
+        </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Performance metrics and cost analysis for the Pouring manufacturing process
+          Performance metrics and cost analysis for the Vibration manufacturing process
         </p>
       </div>
 
@@ -303,12 +202,11 @@ export default function PouringCharts() {
           </div>
         ))}
       </div>
-
-
-<Card className="mb-8 bg-white dark:bg-[#1c2331]">
+ <Card className="mb-8 bg-white dark:bg-[#1c2331]">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-gray-800 dark:text-white">
-            Pouring Process Configuration
+          <CardTitle className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+            <Waves className="w-6 h-6 text-purple-500" />
+            Vibration Process Configuration
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -406,7 +304,7 @@ export default function PouringCharts() {
         {/* Monthly Performance Trends */}
         <div className="lg:col-span-5 bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow-lg">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            Monthly Performance Trends - Pouring Process
+            Monthly Performance Trends - Vibration Process
           </h2>
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart data={monthlyTrendData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
@@ -424,7 +322,7 @@ export default function PouringCharts() {
               />
               <Legend />
               <Bar dataKey="Manual" fill="#EF4444" name="Manual Process" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Zauvijek" fill="#3B82F6" name="With Zauvijek" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Zauvijek" fill="#8B5CF6" name="With Zauvijek" radius={[4, 4, 0, 0]} />
               <Line
                 type="monotone"
                 dataKey="Saving"
@@ -484,75 +382,37 @@ export default function PouringCharts() {
         </div>
       </div>
 
-      {/* Box Plot Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* Cost Distribution Box Plot */}
-        <div className="bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Cost Distribution Analysis</h2>
-          <div className="space-y-4">
-            {costBoxPlotData.map((item, index) => (
-              <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <h3 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">{item.category}</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Min: </span>
-                    <span className="font-medium">₹{item.min.toFixed(2)}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Max: </span>
-                    <span className="font-medium">₹{item.max.toFixed(2)}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Q1: </span>
-                    <span className="font-medium">₹{item.q1.toFixed(2)}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Q3: </span>
-                    <span className="font-medium">₹{item.q3.toFixed(2)}</span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-gray-600 dark:text-gray-400">Median: </span>
-                    <span className="font-bold text-blue-600 dark:text-blue-400">₹{item.median.toFixed(2)}</span>
-                  </div>
+      {/* Vibration Analysis Section */}
+      <div className="mb-8">
+        <Card className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-purple-800 dark:text-purple-400 flex items-center gap-2">
+              📊 Vibration Analysis & Optimization
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="text-sm text-gray-600 dark:text-gray-400">Frequency Optimization</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                  {formData.costReduction.toFixed(1)}% Better
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Energy Distribution Box Plot */}
-        <div className="bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Energy Distribution Analysis</h2>
-          <div className="space-y-4">
-            {energyBoxPlotData.map((item, index) => (
-              <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <h3 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">{item.category}</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Min: </span>
-                    <span className="font-medium">{item.min.toFixed(2)} kWh</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Max: </span>
-                    <span className="font-medium">{item.max.toFixed(2)} kWh</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Q1: </span>
-                    <span className="font-medium">{item.q1.toFixed(2)} kWh</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Q3: </span>
-                    <span className="font-medium">{item.q3.toFixed(2)} kWh</span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-gray-600 dark:text-gray-400">Median: </span>
-                    <span className="font-bold text-green-600 dark:text-green-400">{item.median.toFixed(2)} kWh</span>
-                  </div>
-                </div>
+              <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="text-sm text-gray-600 dark:text-gray-400">Amplitude Control</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">Enhanced</div>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="text-sm text-gray-600 dark:text-gray-400">Equipment Life</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">Extended</div>
+              </div>
+              <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="text-sm text-gray-600 dark:text-gray-400">Process Stability</div>
+                <div className="text-lg font-bold text-purple-600 dark:text-purple-400">Improved</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Additional Insights */}
@@ -561,19 +421,19 @@ export default function PouringCharts() {
         <div className="bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow-lg">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Cost Savings Breakdown</h2>
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
               <span className="text-gray-700 dark:text-gray-300">Daily Savings</span>
-              <span className="font-bold text-blue-600 dark:text-blue-400">₹{formData.dailySaving.toFixed(2)}</span>
+              <span className="font-bold text-purple-600 dark:text-purple-400">₹{formData.dailySaving.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-violet-50 dark:bg-violet-900/20 rounded-lg">
               <span className="text-gray-700 dark:text-gray-300">Monthly Savings</span>
-              <span className="font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="font-bold text-violet-600 dark:text-violet-400">
                 ₹{formData.monthlySaving.toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
               <span className="text-gray-700 dark:text-gray-300">Yearly Savings</span>
-              <span className="font-bold text-teal-600 dark:text-teal-400">
+              <span className="font-bold text-indigo-600 dark:text-indigo-400">
                 ₹{formData.yearlySaving.toLocaleString()}
               </span>
             </div>
@@ -596,7 +456,11 @@ export default function PouringCharts() {
             </div>
             <div className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
               <span className="text-gray-700 dark:text-gray-300">ROI Impact</span>
-              <span className="font-bold text-yellow-600 dark:text-yellow-400">High</span>
+              <span className="font-bold text-yellow-600 dark:text-yellow-400">Good</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+              <span className="text-gray-700 dark:text-gray-300">Process Priority</span>
+              <span className="font-bold text-cyan-600 dark:text-cyan-400">Medium</span>
             </div>
           </div>
         </div>
@@ -604,3 +468,5 @@ export default function PouringCharts() {
     </div>
   )
 }
+
+export default Vibration

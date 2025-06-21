@@ -1,275 +1,397 @@
 "use client";
 
+import React from "react";
 import {
   ResponsiveContainer,
-  BarChart,
+  Bar,
+  CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
   Legend,
-  Bar,
-  CartesianGrid,
-  LineChart,
   Line,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
   ComposedChart,
 } from "recharts";
-import { useState } from "react";
+import { FaIndustry, FaRupeeSign, FaChartLine, FaBolt } from "react-icons/fa";
+import { MdSavings, MdCalendarToday } from "react-icons/md";
+import CountUp from "react-countup";
+import ReactApexChart from "react-apexcharts";
+import { ApexOptions } from "apexcharts";
 
-const getLast10Days = () => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const today = new Date();
-  const result = [];
-
-  for (let i = 0; i < 10; i++) {
-    const date = new Date();
-    date.setDate(today.getDate() + i);
-    result.push(days[date.getDay()]);
-  }
-
-  return result;
-};
-
-type FilterType = "daily" | "weekly" | "monthly" | "yearly";
-const dynamicDays = getLast10Days();
-
-const allData = {
-  daily: {
-    electricityData: dynamicDays.map((day, index) => ({
-      name: day,
-      before: 75 - index * 0.5,
-      after: 50 - index * 0.5,
-    })),
-    co2Data: dynamicDays.map((day, index) => ({
-      name: day,
-      saved: 3 + (index % 3) * 0.2,
-    })),
-    pieData: [
-      { name: "Before Zauvijek", value: 731.25 },
-      { name: "With Zauvijek", value: 325 },
-    ],
+const summaryData = [
+  {
+    title: "Processes Name",
+    value: "Mold Preparation",
+    isCurrency: false,
+    colors: "from-blue-600 to-blue-500",
+    icon: <FaIndustry className="text-2xl" />,
   },
-  weekly: {
-    electricityData: [
-      { name: "Week 1", before: 400, after: 200 },
-      { name: "Week 2", before: 331.25, after: 125 },
-    ],
-    co2Data: [
-      { name: "Week 1", saved: 18.3 },
-      { name: "Week 2", saved: 18.26 },
-    ],
-    pieData: [
-      { name: "Before Zauvijek", value: 731.25 },
-      { name: "With Zauvijek", value: 325 },
-    ],
+  {
+    title: "Without Zauvijek",
+    value: 731.25,
+    isCurrency: true,
+    colors: "from-blue-700 to-blue-500",
+    icon: <FaRupeeSign className="text-2xl" />,
   },
-  monthly: {
-    electricityData: [
-      { name: "Mold Preparation", before: 731.25, after: 325 },
-    ],
-    co2Data: [
-      { name: "Mold Preparation", saved: 36.56 },
-    ],
-    pieData: [
-      { name: "Before Zauvijek", value: 731.25 },
-      { name: "With Zauvijek", value: 325 },
-    ],
+  {
+    title: "With Zauvijek",
+    value: 325.0,
+    isCurrency: true,
+    colors: "from-sky-700 to-sky-500",
+    icon: <FaRupeeSign className="text-2xl" />,
   },
-  yearly: {
-    electricityData: [
-      { name: "Mold Preparation", before: 8775, after: 3900 },
-    ],
-    co2Data: [
-      { name: "Mold Preparation", saved: 438.72 },
-    ],
-    pieData: [
-      { name: "Before Zauvijek", value: 8775 },
-      { name: "With Zauvijek", value: 3900 },
-    ],
+  {
+    title: "Avg. Cost Reduction",
+    value: 55.56,
+    suffix: "%",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-rose-600 to-red-500",
+    icon: <FaChartLine className="text-2xl" />,
   },
-};
-
-const sampleData1 = [
-  { name: "Jan", production: 400, current: 240 },
-  { name: "Feb", production: 300, current: 139 },
-  { name: "Mar", production: 500, current: 280 },
-  { name: "Apr", production: 278, current: 390 },
-  { name: "May", production: 189, current: 480 },
-  { name: "Jun", production: 356, current: 298 },
-  { name: "Jul", production: 420, current: 310 },
-  { name: "Aug", production: 470, current: 345 },
-  { name: "Sep", production: 490, current: 360 },
-  { name: "Oct", production: 430, current: 375 },
-  { name: "Nov", production: 410, current: 295 },
-  { name: "Dec", production: 450, current: 320 },
+  {
+    title: "Electricity Saved",
+    value: 36.56,
+    suffix: " kWh",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-emerald-600 to-emerald-400",
+    icon: <FaBolt className="text-2xl" />,
+  },
+  {
+    title: "Total Saving (Per Day)",
+    value: 406.25,
+    isCurrency: true,
+    decimals: 2,
+    colors: "from-yellow-500 to-orange-400",
+    icon: <MdSavings className="text-2xl" />,
+  },
+  {
+    title: "Monthly Saving",
+    value: 12187.5,
+    isCurrency: true,
+    colors: "from-indigo-600 to-indigo-400",
+    icon: <MdCalendarToday className="text-2xl" />,
+  },
+  {
+    title: "Yearly Saving",
+    value: 148281.25,
+    isCurrency: true,
+    colors: "from-teal-600 to-teal-400",
+    icon: <MdCalendarToday className="text-2xl" />,
+  },
 ];
 
-const COLORS = ["#F97316", "#10B981"];
+const moldPreparationData = {
+  processName: "Mold Preparation",
+  cost: {
+    without: 731.25,
+    with: 325.0,
+    saving: 406.25,
+    monthlySaving: 12187.5,
+    yearlySaving: 148281.25,
+    reductionPercent: 55.56,
+  },
+  energy: {
+    before: 65.81,
+    after: 29.25,
+    saved: 36.56,
+    totalConsumption: 57113,
+  },
+};
 
-export default function MoldPreparationViewPage() {
-  const [filter, setFilter] = useState<FilterType>("daily");
-  const { electricityData, co2Data, pieData } = allData[filter];
+const monthlyTrendData = [
+  { name: "Jan", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Feb", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Mar", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Apr", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "May", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Jun", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Jul", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Aug", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Sep", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Oct", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Nov", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+  { name: "Dec", Manual: 731.25, Zauvijek: 325.0, Saving: 406.25 },
+];
 
+const options: ApexOptions = {
+  chart: {
+    height: 350,
+    type: "line",
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    foreColor: "#ffffff", // Makes all default text white
+  },
+  dataLabels: { enabled: false },
+  stroke: {
+    width: [5, 7, 5],
+    curve: "straight",
+    dashArray: [0, 8, 5],
+  },
+  title: {
+    text: "Mold Preparation Statistics",
+    align: "left",
+    style: {
+      fontSize: "16px",
+      fontWeight: "bold",
+      color: "#22c55e",
+    },
+  },
+  legend: {
+    tooltipHoverFormatter: function (
+      val: string,
+      opts: {
+        w: { globals: { series: number[][] } };
+        seriesIndex: number;
+        dataPointIndex: number;
+      }
+    ) {
+      return (
+        val +
+        " - <strong>" +
+        opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+        "</strong>"
+      );
+    },
+  },
+  markers: {
+    size: 0,
+    hover: {
+      sizeOffset: 6,
+    },
+  },
+  xaxis: {
+    categories: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    labels: {
+      style: {
+        fontSize: "12px",
+        colors: [
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+        ], // ✅ Correct spelling and format
+      },
+    },
+
+    axisBorder: {
+      color: "#ffffff",
+    },
+    axisTicks: {
+      color: "#ffffff",
+    },
+  },
+
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: "12px",
+        colors: ["#ffffff"],
+      },
+    },
+  },
+  tooltip: {
+    theme: "dark",
+    y: [
+      {
+        formatter: (val: number) => `${val} ₹`,
+      },
+      {
+        formatter: (val: number) => `${val} ₹`,
+      },
+      {
+        formatter: (val: number) => `${val} ₹`,
+      },
+    ],
+  },
+
+  grid: {
+    borderColor: "#374151",
+    strokeDashArray: 0,
+  },
+};
+
+// Using same monthly values repeated (based on your table)
+const series = [
+  {
+    name: "Without Zauvijek",
+    data: Array(12).fill(731.25), // ₹ Without Zauvijek
+  },
+  {
+    name: "With Zauvijek",
+    data: Array(12).fill(325.0), // ₹ With Zauvijek
+  },
+  {
+    name: "Saving",
+    data: Array(12).fill(406.25), // ₹ Saving
+  },
+];
+
+export default function MoldPreparationCharts() {
   return (
-    <div className="space-y-4 mb-5">
-      <div className="flex justify-end mb-2">
-        <select
-          className="p-2 border rounded"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as FilterType)}
-        >
-          <option value="daily">Last 10 Days</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-          <option value="yearly">Yearly</option>
-        </select>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-3">
-        <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Processes Name</div>
-          <div className="text-sm">Mold Preparation</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-gray-700 to-gray-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Electricity Saved</div>
-          <div className="text-sm">₹406.25</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-sky-700 to-sky-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">CO₂ Reduced</div>
-          <div className="text-sm">36.56 kg</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-rose-600 to-red-500 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Total Rejections</div>
-          <div className="text-sm">Reduced</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">Without Zauvijek</div>
-          <div className="text-sm">₹731.25</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-3 rounded-xl text-white shadow">
-          <div className="text-xl font-semibold">With Zauvijek</div>
-          <div className="text-sm">₹325</div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
-          <h4 className="h6 mb-3">Electricity: Before vs After Zauvijek</h4>
-          <ResponsiveContainer width="100%" height="90%">
-            <BarChart data={electricityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip formatter={(value) => `₹${value}`} />
-              <Legend />
-              <Bar dataKey="before" fill="#F97316" name="Before Zauvijek" />
-              <Bar dataKey="after" fill="#10B981" name="With Zauvijek" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
-          <h4 className="h6 mb-3">Electricity</h4>
-          <ResponsiveContainer width="100%" height="90%">
-            <LineChart data={electricityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="before"
-                stroke="#F97316"
-                name="Before Zauvijek"
-              />
-              <Line
-                type="monotone"
-                dataKey="after"
-                stroke="#10B981"
-                name="With Zauvijek"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
-          <h4 className="h6 mb-3">CO₂ Savings</h4>
-          <ResponsiveContainer width="100%" height="90%">
-            <AreaChart data={co2Data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Area
-                type="monotone"
-                dataKey="saved"
-                stroke="#10B981"
-                fill="#A7F3D0"
-                name="CO₂ Saved (kg)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white rounded-xl p-4 shadow-md h-[400px]">
-          <h4 className="h6 mb-3">Electricity Split</h4>
-          <ResponsiveContainer width="100%" height="90%">
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl p-4 shadow-md h-[440px]">
-        <h4 className="h6 mb-3">Monthly Consumption</h4>
-        <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart
-            data={sampleData1}
-            margin={{ top: 20, right: 30, left: 0, bottom: 50 }}
+    <div className="min-h-screen bg-white dark:bg-[#0f1422] text-black dark:text-white p-6 mb-5 transition-colors duration-300">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
+        {summaryData.map((item, idx) => (
+          <div
+            key={idx}
+            className={`bg-gradient-to-r ${item.colors} p-4 rounded-xl text-white shadow flex gap-3 items-start sm:items-center`}
           >
-            <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: 12 }}
-              angle={-45}
-              textAnchor="end"
-              height={70}
-            />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="production" name="Production" fill="#10b981" barSize={20} />
-            <Line dataKey="current" name="Current" type="monotone" stroke="#fbbf24" strokeWidth={2} dot />
-          </ComposedChart>
-        </ResponsiveContainer>
+            {item.icon}
+            <div>
+              <div className="text-base font-semibold">{item.title}</div>
+              <div className="text-sm sm:text-base">
+                {typeof item.value === "number" ? (
+                  <>
+                    {item.isCurrency && "₹"}
+                    <CountUp
+                      end={item.value}
+                      duration={1.8}
+                      decimals={item.decimals || 0}
+                      separator=","
+                      suffix={item.suffix || ""}
+                    />
+                  </>
+                ) : (
+                  item.value
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-7 md:grid-rows-1 gap-8 mb-8">
+        {/* Monthly Performance Trends */}
+        <div className="md:col-span-5 bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+            Monthly Performance Trends (Jan - Dec)
+          </h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <ComposedChart
+              data={monthlyTrendData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              {/* Remove inner grid lines */}
+              <CartesianGrid vertical={false} horizontal={false} />
+
+              {/* Axis lines with white tick text */}
+              <XAxis
+                dataKey="name"
+                axisLine={true}
+                tickLine={true}
+                tick={{ fill: "#ffffff", fontSize: 12 }}
+              />
+              <YAxis
+                axisLine={true}
+                tickLine={true}
+                tick={{ fill: "#ffffff", fontSize: 12 }}
+              />
+
+              <Tooltip />
+              <Legend />
+
+              <Bar dataKey="Manual" fill="#3722f5" name="Manual Process" />
+              <Bar dataKey="Zauvijek" fill="#3B82F6" name="With Zauvijek" />
+              <Line
+                type="monotone"
+                dataKey="Saving"
+                stroke="#10B981"
+                name="Savings"
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Pie Chart for Energy Comparison */}
+        <div className="md:col-span-2 bg-white dark:bg-[#1c2331] p-6 rounded-xl shadow">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+            Energy Comparison (kWh)
+          </h2>
+          <form className="space-y-4 mb-6 text-sm text-gray-800 dark:text-gray-200">
+            <div className="flex flex-col">
+              <label className="mb-1" htmlFor="before">
+                ⚡ Before Zauvijek
+              </label>
+              <input
+                id="before"
+                type="number"
+                defaultValue={moldPreparationData.energy.before}
+                className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1" htmlFor="after">
+                ⚡ After Zauvijek
+              </label>
+              <input
+                id="after"
+                type="number"
+                defaultValue={moldPreparationData.energy.after}
+                className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1" htmlFor="saved">
+                ✅ Energy Saved
+              </label>
+              <input
+                id="saved"
+                type="number"
+                defaultValue={moldPreparationData.energy.saved}
+                className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1" htmlFor="monthly">
+                📆 Monthly Consumption
+              </label>
+              <input
+                id="monthly"
+                type="number"
+                defaultValue={moldPreparationData.energy.totalConsumption}
+                className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 w-full dark:bg-[#13124b] text-white py-2 rounded-lg hover:bg-[#1c2331]-700 transition"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="md:col-span-5 bg-white dark:bg-[#1c2331] p-6 mb-5 rounded-xl shadow">
+        <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+          Monthly Performance Trends (Jan - Dec)
+        </h2>
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="line"
+          height={350}
+        />
       </div>
     </div>
   );

@@ -121,24 +121,11 @@ const componentChart = {
     {
       data: [60, 55.56, 60, 12.6, 43.75],
       backgroundColor: [
-        "#4C7073", // Teal Blue
-        "#D3823C", // Burnt Orange
-        "#D8C8A6", // Warm Beige
-        "#47595E", // Slate Blue
-        "#E6E3DC", // Light Sand (Optional)
-
-        "#a78bfa",
-        "#f472b6",
-        "#34d399",
-        "#fcd34d",
-        "#c084fc",
-        "#fdba74",
-        "#f87171",
-        "#facc15",
-        "#4ade80",
-        "#60a5fa",
-        "#a78bfa",
-        "#f472b6",
+       "#4C7073", // ✅ Refined Teal Blue
+  "#D3823C", // ✅ Burnt Orange
+  "#C9B693", // Updated Warm Beige (richer tone)
+  "#3B4C54", // Darker Slate Blue for contrast
+  "#F0EDE5", // Softer Light Sand for better readability
       ],
       borderWidth: 1,
       cutout: "50%",
@@ -171,12 +158,12 @@ const savingsData = [
 ];
 
 const colors = [
-   "#4C7073", // Teal Blue
-        "#D3823C", // Burnt Orange
-        "#D8C8A6", // Warm Beige
-        "#47595E", // Slate Blue
-        "#E6E3DC", // Light Sand (Optional)
-  "#eab308", "#f59e0b", "#f97316", "#ef4444", "#f43f5e",
+   "#34B58A", // Teal Blue
+        "#34B58A", // Burnt Orange
+        "#34B58A", // Warm Beige
+        "#34B58A", // Slate Blue
+        "#34B58A", // Light Sand (Optional)
+  "#34B58A", "#34B58A", "#f97316", "#ef4444", "#f43f5e",
   "#e11d48", "#a855f7", "#6366f1", "#0f172a", "#14b8a6",
   "#8b5cf6", "#ec4899",
 ];
@@ -335,10 +322,11 @@ const OverviewPage = () => {
                       angle={-30}
                       textAnchor="end"
                       height={60}
+                      axisLine={true}  
                     />
                     <YAxis
                       tick={{ fill: "#fff", fontSize: 12 }}
-                      axisLine={false} // ✅ hides Y axis line
+                      axisLine={true}   // ✅ hides Y axis line
                       tickLine={false} // ✅ hides tick lines on Y axis
                     />
                     {/* <Tooltip formatter={(value) => [`₹${value}`, "Cost"]} /> */}
@@ -380,8 +368,9 @@ const OverviewPage = () => {
                       angle={-30}
                       textAnchor="end"
                       height={60}
+                      axisLine={true}  
                     />
-                    <YAxis tick={{ fill: "#fff", fontSize: 12 }} />
+                    <YAxis tick={{ fill: "#fff", fontSize: 12 }} axisLine={true}   />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "#1f2937",
@@ -429,31 +418,45 @@ const OverviewPage = () => {
           <h3 className="text-md font-semibold mb-2">
             Cost Savings Distribution
           </h3>
-          <ResponsiveContainer width="100%" height="90%">
-        <BarChart data={savingsData}>
-          <CartesianGrid strokeDasharray="0" stroke="#e5e7eb" />
-          <XAxis
-            dataKey="name"
-            tick={{ fontSize: 10 }}
-            angle={-30}
-            textAnchor="end"
-            height={70}
-          />
-          <YAxis
-            tick={{ fontSize: 12 }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
-          <Legend />
-          <Bar dataKey="saving" name="₹ Saving (Per Day)">
-            <LabelList dataKey="saving" position="top" formatter={(value) => `₹${value}`} fontSize={10} />
-            {savingsData.map((_, index) => (
-              <Cell key={index} fill={colors[index % colors.length]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+ <ResponsiveContainer width="100%" height="90%">
+  <BarChart data={savingsData}>
+    {/* CartesianGrid removed to hide inner lines */}
+    
+    <XAxis
+      dataKey="name"
+      tick={{ fontSize: 10 }}
+      angle={-30}
+      textAnchor="end"
+      height={70}
+      axisLine={true}     // Show X-axis line
+      tickLine={true}     // Show X-axis tick marks
+    />
+    
+    <YAxis
+      tick={{ fontSize: 12 }}
+      axisLine={true}     // Show Y-axis line
+      tickLine={true}     // Show Y-axis tick marks
+    />
+    
+    <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
+    <Legend />
+    
+    <Bar dataKey="saving" name="₹ Saving (Per Day)">
+      <LabelList
+  dataKey="saving"
+  position="top"
+  formatter={(value: number) => `₹${value}`}
+  fontSize={10}
+/>
+
+      {savingsData.map((_, index) => (
+        <Cell key={index} fill={colors[index % colors.length]} />
+      ))}
+    </Bar>
+  </BarChart>
+</ResponsiveContainer>
+
+
         </div>
       </div>
     </div>
