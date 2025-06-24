@@ -1,0 +1,395 @@
+/* Enhanced custom styles for fishbone chart in dark theme */
+.fishbone-chart {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 8px !important;
+  height: 400px;
+  padding: 50px;
+  padding-top: 10%;
+}
+
+.fishbone-chart svg {
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+.fishbone-chart text {
+  fill: #13f70b !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.fishbone-chart .bone {
+  stroke: #f0168e !important;
+  stroke-width: 2 !important;
+}
+
+.fishbone-chart .main-bone {
+  stroke: #000a0c !important;
+  stroke-width: 4 !important;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+.fishbone-chart .category-label {
+  fill: #22d3ee !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.5)) !important;
+}
+
+.fishbone-chart .cause-label {
+  fill: #cbd5e1 !important;
+  font-size: 12px !important;
+}
+
+.fishbone-chart .problem-label {
+  fill: #fbbf24 !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.5)) !important;
+}
+
+/* Enhanced hover effects */
+.fishbone-chart .cause-group:hover .cause-label {
+  fill: #fbbf24 !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+}
+
+.fishbone-chart .category-group:hover .category-label {
+  fill: #06b6d4 !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+.fishbone-chart .category-group:hover .bone {
+  stroke: #22d3ee !important;
+  stroke-width: 3 !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Special styling for different process types */
+.fishbone-chart[data-process="scrap"] .main-bone {
+  stroke: #10b981 !important;
+}
+
+.fishbone-chart[data-process="heat"] .main-bone {
+  stroke: #f59e0b !important;
+}
+
+.fishbone-chart[data-process="vibration"] .main-bone {
+  stroke: #8b5cf6 !important;
+}
+.fishbone-chart text {
+  fill: rgb(218, 13, 13); /* for SVG text */
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.fishbone-chart .label {
+  color: #0b59f7; /* for HTML text if not SVG */
+  font-size: 14px;
+  font-weight: 500;
+}
+.fishboneChart{
+    display: flex;        
+    justify-items: center;
+    min-height: 200px;
+}
+
+.top {
+    border-bottom: 2px solid;
+    border-radius: 5%;
+}
+
+.bottom {
+    border-top: 2px solid;
+    border-radius: 5%;
+}
+
+.left {
+    border-left: 2px solid;
+}
+
+.all {
+    border: 2px solid;
+}
+
+.causes {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.causesGroup {
+    flex: 1;
+    display: flex;
+    margin-right: 10px;
+}
+
+.cause {    
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    width: 60%;
+    font-size: 0.95em;
+    font-weight: 400;        
+    color: #f10404;
+    padding: 5px 0px;
+}
+
+.causeAndLine {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.rootCauses {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    flex: 3;
+    font-size: 0.85em;
+    font-weight: 400;
+    color: #4f4f4f;
+    text-align: right;
+    padding: 15px 0px;
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 10px;
+}
+
+.legendLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4f4f4f;
+    font-size: 0.95em;
+    font-weight: 400; 
+    margin-bottom: 6px;   
+    cursor: default;     
+} 
+
+.blue_{
+    background: rgb(0, 192, 239, 0.1);
+}
+
+.black_{
+    background: rgb(17, 17, 17, 0.1);
+}
+
+.blue_two_ {
+    background: rgb(11, 120, 206, 0.1);
+}
+
+.gray_ {
+    background: rgb(104,115,140, 0.1);
+}
+
+.green_ {
+    background:rgb(48, 187, 187, 0.1);
+}
+
+.pink_ {
+    background: rgb(216, 27, 96, 0.1);
+}
+
+.purple_ {
+    background: rgb(85, 82, 153, 0.1);
+}
+
+.orange_ {
+    background:rgb(255, 119, 1, 0.1);
+}
+
+.blue_dark{
+    background: rgb(0, 192, 239, 0.4);
+}
+
+.black_dark{
+    background: rgb(17, 17, 17, 0.4);
+}
+
+.blue_two_dark {
+    background: rgb(11, 120, 206, 0.4);
+}
+
+.gray_dark {
+    background: rgb(104,115,140, 0.4);
+}
+
+.green_dark {
+    background:rgb(48, 187, 187, 0.4);
+}
+
+.pink_dark {
+    background: rgb(216, 27, 96, 0.4);
+}
+
+.purple_dark {
+    background: rgb(85, 82, 153, 0.4);
+}
+
+.orange_dark {
+    background:rgb(255, 119, 1, 0.4);
+}
+
+.blueBorder{
+    border-color: rgb(0, 192, 239) !important;
+}
+
+.blackBorder{
+    border-color: rgb(17, 17, 17) !important;
+}
+
+.blue_twoBorder {
+    border-color: rgb(11, 120, 206) !important;
+}
+
+.grayBorder {
+    border-color: rgb(104,115,140) !important;
+}
+
+.greenBorder {
+    border-color: rgb(48, 187, 187) !important;
+}
+
+.pinkBorder {
+    border-color: rgb(216, 27, 96) !important;
+}
+
+.purpleBorder {
+    border-color: rgb(85, 82, 153) !important;
+}
+
+.orangeBorder {
+    border-color: rgb(255, 119, 1) !important;
+}
+
+.labelSquare{
+    flex: 1;
+    width: 42px;
+    height: 14px;    
+    margin: 0px 4px 0px 4px;
+}
+
+.labelLineThrough{
+    text-decoration: line-through;
+    font-size: 0.95em;
+    font-weight: 400;
+    color: #4f4f4f;
+}
+
+.label_{
+    font-size: 0.95em;
+    font-weight: 400;    
+    color: #4f4f4f;
+}
+
+.effect {    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.effectValue {    
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.95em;
+    font-weight: 400; 
+    color: #4f4f4f;
+    padding: 5px 10px 5px 10px;  
+}
+
+.diagonalLine {
+    flex: 1;
+    height:100%;
+}
+
+.blueTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(0, 192, 239), transparent calc(50% + 1.5px) );
+}
+
+.blueBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(0, 192, 239), transparent calc(50% + 1.5px) );
+}
+
+.blackTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(17, 17, 17), transparent calc(50% + 1.5px) );
+}
+
+.blackBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(17, 17, 17), transparent calc(50% + 1.5px) );
+}
+
+.blue_twoTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(11, 120, 206), transparent calc(50% + 1.5px) );
+}
+
+.blue_twoBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(11, 120, 206), transparent calc(50% + 1.5px) );
+}
+
+.grayTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(104,115,140), transparent calc(50% + 1.5px) );
+}
+
+.grayBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(104,115,140), transparent calc(50% + 1.5px) );
+}
+
+.greenTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(48, 187, 187), transparent calc(50% + 1.5px) );
+}
+
+.greenBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(48, 187, 187), transparent calc(50% + 1.5px) );
+}
+
+.pinkTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(216, 27, 96), transparent calc(50% + 1.5px) );
+}
+
+.pinkBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(216, 27, 96), transparent calc(50% + 1.5px) );
+}
+
+.purpleTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(85, 82, 153), transparent calc(50% + 1.5px) );
+}
+
+.purpleBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(85, 82, 153), transparent calc(50% + 1.5px) );
+}
+
+.orangeTopBottom {
+    background: linear-gradient(to top right, transparent calc(50% - 2px), rgb(255, 119, 1), transparent calc(50% + 1.5px) );
+}
+
+.orangeBottomTop {
+    background: linear-gradient(to bottom right, transparent calc(50% - 2px), rgb(255, 119, 1), transparent calc(50% + 1.5px) );
+}
+
+.lineEffect {
+    width: 100%;    
+    border-bottom: 2px solid;
+}
+
+.causeContent{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 50%;
+}

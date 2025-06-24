@@ -1,0 +1,1488 @@
+"use client"
+import {
+  Line,
+  BarChart,
+  LabelList,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  Cell,
+  Area,
+  AreaChart,
+  Radar,
+} from "recharts"
+import CountUp from "react-countup"
+import { FaRupeeSign, FaChartLine, FaIndustry, FaLeaf, FaCalendarAlt } from "react-icons/fa"
+import { MdSavings } from "react-icons/md"
+import { Doughnut } from "react-chartjs-2"
+import type { ChartOptions } from "chart.js"
+import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend } from "chart.js"
+ChartJS.register(ArcElement, ChartTooltip, ChartLegend)
+
+const summaryData = [
+  {
+    title: "Total Processes",
+    value: 17,
+    isCurrency: false,
+    colors: "from-blue-600 to-blue-500",
+    icon: <FaIndustry className="text-2xl" />,
+  },
+  {
+    title: "Without Zauvijek",
+    value: 2028423.77,
+    isCurrency: true,
+    colors: "from-blue-700 to-blue-500",
+    icon: <FaRupeeSign className="text-2xl" />,
+  },
+  {
+    title: "With Zauvijek",
+    value: 1980849.41,
+    isCurrency: true,
+    colors: "from-sky-700 to-sky-500",
+    icon: <FaRupeeSign className="text-2xl" />,
+  },
+  {
+    title: "Avg. Cost Reduction",
+    value: 41.58,
+    suffix: "%",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-rose-600 to-red-500",
+    icon: <FaChartLine className="text-2xl" />,
+  },
+  {
+    title: "CO₂ Reduced",
+    value: 54858.75,
+    suffix: " kWh",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-emerald-600 to-emerald-400",
+    icon: <FaLeaf className="text-2xl" />,
+  },
+  {
+    title: "Total Savings",
+    value: 49536.38,
+    isCurrency: true,
+    decimals: 2,
+    colors: "from-yellow-500 to-orange-400",
+    icon: <MdSavings className="text-2xl" />,
+  },
+  {
+    title: "Monthly Saving",
+    value: 1484140.0,
+    isCurrency: true,
+    colors: "from-indigo-600 to-indigo-400",
+    icon: <FaCalendarAlt className="text-2xl" />,
+  },
+  {
+    title: "Yearly Saving",
+    value: 18052701.25,
+    isCurrency: true,
+    colors: "from-teal-600 to-teal-400",
+    icon: <FaCalendarAlt className="text-2xl" />,
+  },
+]
+const componentChart = {
+  labels: [
+    "Pattern Making : 60.00%",
+    "Mold Preparation : 55.56%",
+    "Assembly of Mold & Gating : 60.00%",
+    "Metal Melting : 12.60%",
+    "Tapping : 43.75%",
+    // "Purification : 41.67%",
+    // "Pouring : 35.71%",
+    // "Rough Casting : 46.16%",
+    // "Cooling : 40.00%",
+    // "Solidification : 50.00%",
+    // "Risers : 50.00%",
+    // "Shakeout : 44.40%",
+    // "Mold Breaking : 46.10%",
+    // "Fettling : 40.90%",
+    // "Scrap Opt. : 2.00%",
+    // "Heat Process : 40.00%",
+    // "Vibration : 38.00%",
+  ],
+  datasets: [
+    {
+      data: [60, 55.56, 60, 12.6, 43.75],
+      backgroundColor: [
+        "#93C5FD", // Light Blue
+        "#FDE68A", // Light Yellow
+        "#A7F3D0", // Light Green
+        "#FECACA", // Light Red
+        "#DDD6FE", // Light Purple
+      ],
+      borderWidth: 1,
+      cutout: "50%",
+    },
+  ],
+}
+
+const savingsData = [
+  { name: "Pattern Making", saving: 292.5 },
+  { name: "Mold Prep", saving: 406.25 },
+  { name: "Assembly", saving: 292.5 },
+  // { name: "Metal Melting", saving: 1381.25 },
+  { name: "Tapping", saving: 437.5 },
+  { name: "Purification", saving: 406.25 },
+  { name: "Pouring", saving: 406.25 },
+  { name: "Rough Casting", saving: 243.75 },
+  // { name: "Cooling", saving: 146.25 },
+  // { name: "Solidification", saving: 73.13 },
+  // { name: "Risers", saving: 56.88 },
+  // { name: "Shakeout", saving: 32.5 },
+  // { name: "Shot Blasting", saving: 48.75 },
+  // { name: "Finishing", saving: 73.13 },
+  // { name: "Scrap Opt.", saving: 40000 },
+  // { name: "Heat Process", saving: 5000 },
+  // { name: "Vibration", saving: 237.5 },
+]
+
+// Update colors array to light colors
+const colors = [
+  "#93C5FD", // Light Blue
+  "#FDE68A", // Light Yellow
+  "#A7F3D0", // Light Green
+  "#FECACA", // Light Red
+  "#DDD6FE", // Light Purple
+  "#FED7AA", // Light Orange
+  "#BFDBFE", // Light Sky
+  "#F3E8FF", // Light Violet
+  "#ECFDF5", // Light Emerald
+  "#FEF3C7", // Light Amber
+]
+
+const chartOptions: ChartOptions<"doughnut"> = {
+  plugins: {
+    legend: {
+      position: "right", // ✅ This is now correct, matching allowed values
+      labels: {
+        color: "#fff",
+        font: {
+          size: 12,
+        },
+      },
+    },
+    tooltip: {
+      callbacks: {
+        label: (ctx) => `${ctx.label}`,
+      },
+    },
+  },
+  maintainAspectRatio: false,
+}
+
+const allProcessData = [
+  { name: "Pattern Making", without: 487.5, with: 195, saving: 292.5 },
+  { name: "Mold Preparation", without: 731.25, with: 325, saving: 406.25 },
+  { name: "Assembly", without: 487.5, with: 195, saving: 292.5 },
+  { name: "Metal Melting", without: 10968.75, with: 9587.5, saving: 1381.25 },
+  { name: "Tapping", without: 1000, with: 562.5, saving: 437.5 },
+  { name: "Purification", without: 975, with: 568.75, saving: 406.25 },
+  { name: "Pouring", without: 1137.5, with: 731.25, saving: 406.25 },
+  { name: "Rough Casting", without: 528.13, with: 284.38, saving: 243.75 },
+  { name: "Cooling", without: 365.63, with: 219.38, saving: 146.25 },
+  { name: "Solidification", without: 146.25, with: 73.13, saving: 73.13 },
+  { name: "Risers", without: 113.75, with: 56.88, saving: 56.88 },
+  { name: "Shakeout", without: 73.13, with: 40.63, saving: 32.5 },
+  { name: "Mold Breaking", without: 105.63, with: 56.88, saving: 48.75 },
+  { name: "Fettling", without: 178.75, with: 105.63, saving: 73.13 },
+  { name: "Scrap Opt.", without: 2000000, with: 1960000, saving: 40000 },
+  { name: "Heat Process", without: 12500, with: 7500, saving: 5000 },
+  // { name: "Vibration", without: 625, with: 387.5, saving: 237.5 },
+]
+
+type ProcessData = {
+  name: string
+  without: number
+  with: number
+  saving: number
+}
+
+const chunkData = (data: ProcessData[], chunkSize: number): ProcessData[][] => {
+  const chunks: ProcessData[][] = []
+  for (let i = 0; i < data.length; i += chunkSize) {
+    chunks.push(data.slice(i, i + chunkSize))
+  }
+  return chunks
+}
+
+// Add new data for additional charts
+const energyData = [
+  { month: "Jan", consumption: 1200, target: 1000 },
+  { month: "Feb", consumption: 1100, target: 1000 },
+  { month: "Mar", consumption: 950, target: 1000 },
+  { month: "Apr", consumption: 800, target: 1000 },
+  { month: "May", consumption: 750, target: 1000 },
+]
+
+const efficiencyData = [
+  { week: "W1", efficiency: 85 },
+  { week: "W2", efficiency: 88 },
+  { week: "W3", efficiency: 92 },
+  { week: "W4", efficiency: 95 },
+]
+
+const qualityData = {
+  labels: ["Accuracy", "Speed", "Reliability", "Cost", "Safety"],
+  datasets: [
+    {
+      data: [90, 85, 88, 92, 95],
+      backgroundColor: "rgba(147, 197, 253, 0.3)",
+      borderColor: "#60A5FA",
+      borderWidth: 2,
+    },
+  ],
+}
+
+const productionData = [
+  { month: "Jan", heavy: 120, light: 80 },
+  { month: "Feb", heavy: 140, light: 90 },
+  { month: "Mar", heavy: 160, light: 100 },
+  { month: "Apr", heavy: 180, light: 110 },
+]
+
+const costBreakdownData = {
+  labels: ["Materials", "Labor", "Energy", "Maintenance", "Other"],
+  datasets: [
+    {
+      data: [40, 25, 20, 10, 5],
+      backgroundColor: ["#93C5FD", "#FDE68A", "#A7F3D0", "#FECACA", "#DDD6FE"],
+    },
+  ],
+}
+
+// Add these new data sets after the existing ones
+
+const temperatureData = [
+  { time: "00:00", temp: 22, humidity: 45 },
+  { time: "04:00", temp: 24, humidity: 48 },
+  { time: "08:00", temp: 28, humidity: 52 },
+  { time: "12:00", temp: 32, humidity: 55 },
+  { time: "16:00", temp: 30, humidity: 50 },
+  { time: "20:00", temp: 26, humidity: 47 },
+]
+
+const defectRateData = [
+  { month: "Jan", defects: 2.5, target: 3.0 },
+  { month: "Feb", defects: 2.2, target: 3.0 },
+  { month: "Mar", defects: 1.8, target: 3.0 },
+  { month: "Apr", defects: 1.5, target: 3.0 },
+  { month: "May", defects: 1.2, target: 3.0 },
+]
+
+const machineUtilizationData = [
+  { machine: "M1", utilization: 85, downtime: 15 },
+  { machine: "M2", utilization: 92, downtime: 8 },
+  { machine: "M3", utilization: 78, downtime: 22 },
+  { machine: "M4", utilization: 88, downtime: 12 },
+  { machine: "M5", utilization: 95, downtime: 5 },
+]
+
+const inventoryData = [
+  { item: "Raw Material A", current: 450, minimum: 200, maximum: 600 },
+  { item: "Raw Material B", current: 320, minimum: 150, maximum: 500 },
+  { item: "Component X", current: 180, minimum: 100, maximum: 300 },
+  { item: "Component Y", current: 280, minimum: 200, maximum: 400 },
+]
+
+const maintenanceData = {
+  labels: ["Scheduled", "Completed", "Overdue", "Emergency"],
+  datasets: [
+    {
+      data: [45, 38, 7, 3],
+      backgroundColor: ["#93C5FD", "#A7F3D0", "#FDE68A", "#FECACA"],
+    },
+  ],
+}
+
+const productivityData = [
+  { shift: "Morning", productivity: 95, target: 90 },
+  { shift: "Afternoon", productivity: 88, target: 90 },
+  { shift: "Night", productivity: 82, target: 90 },
+]
+
+const wasteData = [
+  { week: "W1", waste: 12, recycled: 8 },
+  { week: "W2", waste: 10, recycled: 9 },
+  { week: "W3", waste: 8, recycled: 7 },
+  { week: "W4", waste: 6, recycled: 5 },
+]
+
+const orderFulfillmentData = [
+  { day: "Mon", orders: 45, fulfilled: 42 },
+  { day: "Tue", orders: 52, fulfilled: 50 },
+  { day: "Wed", orders: 48, fulfilled: 47 },
+  { day: "Thu", orders: 55, fulfilled: 53 },
+  { day: "Fri", orders: 60, fulfilled: 58 },
+]
+
+const customerSatisfactionData = {
+  labels: ["Excellent", "Good", "Average", "Poor"],
+  datasets: [
+    {
+      data: [65, 25, 8, 2],
+      backgroundColor: ["#A7F3D0", "#93C5FD", "#FDE68A", "#FECACA"],
+    },
+  ],
+}
+
+const financialData = [
+  { quarter: "Q1", revenue: 2500, profit: 450 },
+  { quarter: "Q2", revenue: 2800, profit: 520 },
+  { quarter: "Q3", revenue: 3200, profit: 640 },
+  { quarter: "Q4", revenue: 3500, profit: 720 },
+]
+
+const shiftPerformanceData = [
+  { metric: "Output", morning: 95, afternoon: 88, night: 82 },
+  { metric: "Quality", morning: 92, afternoon: 90, night: 85 },
+  { metric: "Efficiency", morning: 90, afternoon: 85, night: 80 },
+]
+
+const supplierPerformanceData = [
+  { supplier: "Supplier A", onTime: 95, quality: 92 },
+  { supplier: "Supplier B", onTime: 88, quality: 95 },
+  { supplier: "Supplier C", onTime: 92, quality: 88 },
+  { supplier: "Supplier D", onTime: 85, quality: 90 },
+]
+
+const equipmentHealthData = {
+  labels: ["Excellent", "Good", "Fair", "Poor", "Critical"],
+  datasets: [
+    {
+      data: [40, 35, 15, 8, 2],
+      backgroundColor: ["#A7F3D0", "#93C5FD", "#FDE68A", "#FECACA", "#F87171"],
+    },
+  ],
+}
+
+const cycleTimeData = [
+  { process: "Setup", current: 15, target: 12 },
+  { process: "Processing", current: 45, target: 40 },
+  { process: "Inspection", current: 8, target: 6 },
+  { process: "Packaging", current: 12, target: 10 },
+]
+
+const safetyMetricsData = [
+  { month: "Jan", incidents: 2, nearMiss: 5 },
+  { month: "Feb", incidents: 1, nearMiss: 3 },
+  { month: "Mar", incidents: 0, nearMiss: 2 },
+  { month: "Apr", incidents: 1, nearMiss: 4 },
+  { month: "May", incidents: 0, nearMiss: 1 },
+]
+
+// Pyramid Chart Data - Production Process Hierarchy
+const pyramidData = [
+  { stage: "Raw Materials", value: 100, percentage: 100, color: "#A7F3D0" },
+  { stage: "Initial Processing", value: 85, percentage: 85, color: "#93C5FD" },
+  { stage: "Quality Check 1", value: 75, percentage: 75, color: "#FDE68A" },
+  { stage: "Assembly", value: 65, percentage: 65, color: "#FECACA" },
+  { stage: "Quality Check 2", value: 58, percentage: 58, color: "#DDD6FE" },
+  { stage: "Final Processing", value: 52, percentage: 52, color: "#FED7AA" },
+  { stage: "Final Inspection", value: 48, percentage: 48, color: "#BFDBFE" },
+  { stage: "Finished Products", value: 45, percentage: 45, color: "#F3E8FF" },
+]
+
+// Custom Pyramid Component
+const PyramidChart = ({ data }: { data: typeof pyramidData }) => {
+  return (
+    <div className="flex flex-col items-center justify-center h-full space-y-1">
+      {data.map((item, index) => (
+        <div
+          key={index}
+          className="flex flex-col items-center relative"
+          style={{
+            width: `${item.percentage}%`,
+            maxWidth: "90%",
+            minWidth: "20%",
+          }}
+        >
+          <div
+            className="h-8 flex items-center justify-center text-xs font-medium text-gray-800 rounded shadow-sm border"
+            style={{
+              backgroundColor: item.color,
+              width: "100%",
+            }}
+          >
+            <span className="truncate px-2">
+              {item.stage}: {item.value}%
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// Production Flow Funnel Data
+const funnelData = [
+  { name: "Leads Generated", value: 1000, fill: "#A7F3D0" },
+  { name: "Qualified Leads", value: 750, fill: "#93C5FD" },
+  { name: "Proposals Sent", value: 500, fill: "#FDE68A" },
+  { name: "Negotiations", value: 300, fill: "#FECACA" },
+  { name: "Closed Deals", value: 150, fill: "#DDD6FE" },
+]
+
+// Manufacturing Efficiency Pyramid
+const efficiencyPyramidData = [
+  { level: "Strategic Planning", efficiency: 95, color: "#A7F3D0", description: "Top Management" },
+  { level: "Process Optimization", efficiency: 88, color: "#93C5FD", description: "Middle Management" },
+  { level: "Quality Control", efficiency: 82, color: "#FDE68A", description: "Supervisors" },
+  { level: "Production Execution", efficiency: 75, color: "#FECACA", description: "Operators" },
+  { level: "Material Handling", efficiency: 70, color: "#DDD6FE", description: "Support Staff" },
+]
+
+const OverviewPage = () => {
+  const chartChunks = chunkData(allProcessData, 8)
+  return (
+    <div className="min-h-screen bg-white dark:bg-[#0f1422] text-black dark:text-white p-6 mb-5 transition-colors duration-300">
+      <div className="flex flex-wrap gap-3 items-center mb-3">
+        {" "}
+        <label className="flex items-center space-x-2 text-md">
+          {" "}
+          <span className="font-semibold">Filter By</span>{" "}
+        </label>{" "}
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          {" "}
+          <option>Line 1</option> <option>Line 2</option>{" "}
+        </select>
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          <option>Date</option>
+        </select>
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          <option>All</option>
+          <option>Heavy</option>
+          <option>Light</option>
+        </select>
+        <input
+          type="date"
+          className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700"
+          defaultValue="2023-04-28"
+        />
+        <label className="flex items-center space-x-2 text-md">
+          <span className="font-semibold">From</span>
+        </label>
+        <input
+          type="date"
+          className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700"
+          defaultValue="2023-05-11"
+        />
+        <label className="flex items-center space-x-2 text-sm w-20">
+          <input type="checkbox" />
+          <span>Prod Qty</span>
+        </label>
+        <button className="bg-[#2C5282] hover:bg-[#2B6CB0] text-white text-sm px-4 py-2 rounded flex items-center gap-1">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 12.414V18a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5.586L3.293 6.707A1 1 0 013 6V4z"
+            />
+          </svg>
+          Filter
+        </button>
+      </div>
+
+      {/* Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
+        {summaryData.map((item, idx) => (
+          <div
+            key={idx}
+            className={`bg-gradient-to-r ${item.colors} p-4 rounded-xl text-white shadow flex gap-3 items-start sm:items-center`}
+          >
+            {item.icon}
+            <div>
+              <div className="text-base font-semibold">{item.title}</div>
+              <div className="text-sm sm:text-base">
+                {item.isCurrency && "₹"}
+                <CountUp
+                  end={item.value}
+                  duration={1.8}
+                  decimals={item.decimals || 0}
+                  separator=","
+                  suffix={item.suffix || ""}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-4">
+        <div className="flex flex-col gap-3">
+          {chartChunks.map((chunk, idx) => (
+            <div key={idx} className="grid grid-cols-1 lg:grid-cols-1 gap-3">
+              {/* Bar Chart */}
+              <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-medium mb-2">Cost Comparison ₹</h3>
+                <ResponsiveContainer width="100%" height="95%">
+                  <BarChart data={chunk}>
+                    <CartesianGrid stroke="#444" strokeDasharray="0" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "#fff", fontSize: 10 }}
+                      angle={-30}
+                      textAnchor="end"
+                      height={60}
+                      axisLine={true}
+                    />
+                    <YAxis
+                      tick={{ fill: "#fff", fontSize: 12 }}
+                      axisLine={true} // ✅ hides Y axis line
+                      tickLine={false} // ✅ hides tick lines on Y axis
+                    />
+                    {/* <Tooltip formatter={(value) => [`₹${value}`, "Cost"]} /> */}
+                    <Legend />
+                    <Bar dataKey="without" fill="#93C5FD" name="Manual">
+                      <LabelList
+                        dataKey="without"
+                        position="top"
+                        fill="#F9FAFB" // Light text on dark bg
+                        fontSize={11}
+                      />
+                    </Bar>
+
+                    <Bar dataKey="with" fill="#A7F3D0" name="Zauvijek">
+                      <LabelList dataKey="with" position="top" fill="#F9FAFB" fontSize={11} />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Line Chart */}
+              <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-medium mb-2">Savings</h3>
+                <ResponsiveContainer width="100%" height="95%">
+                  <LineChart data={chunk} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+                    <CartesianGrid stroke="#444" strokeDasharray="0" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "#fff", fontSize: 10 }}
+                      angle={-30}
+                      textAnchor="end"
+                      height={60}
+                      axisLine={true}
+                    />
+                    <YAxis tick={{ fill: "#fff", fontSize: 12 }} axisLine={true} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#1f2937",
+                        borderColor: "#374151",
+                      }}
+                      labelStyle={{ color: "#fff" }}
+                      itemStyle={{ color: "#fff" }}
+                      formatter={(value) => [`₹${value}`, "Cost"]}
+                    />
+                    <Legend wrapperStyle={{ color: "#fff" }} />
+                    <Line type="monotone" dataKey="without" stroke="#60A5FA" name="Manual" />
+                    <Line type="monotone" dataKey="with" stroke="#34D399" name="Zauvijek" />
+                    <Line type="monotone" dataKey="saving" stroke="#FBBF24" name="Saving" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="bg-white dark:bg-[#0f1422] p-4 rounded shadow border h-[450px]">
+          <h3 className="text-md font-semibold mb-2">Rejection Distribution By Component</h3>
+          <Doughnut data={componentChart} options={chartOptions} />
+        </div>
+
+        <div className="bg-white dark:bg-[#0f1422] p-4 rounded shadow border h-[450px]">
+          <h3 className="text-md font-semibold mb-2">Cost Savings Distribution</h3>
+          <ResponsiveContainer width="100%" height="90%">
+            <BarChart data={savingsData}>
+              {/* CartesianGrid removed to hide inner lines */}
+
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 10 }}
+                angle={-30}
+                textAnchor="end"
+                height={70}
+                axisLine={true} // Show X-axis line
+                tickLine={true} // Show X-axis tick marks
+              />
+
+              <YAxis
+                tick={{ fontSize: 12 }}
+                axisLine={true} // Show Y-axis line
+                tickLine={true} // Show Y-axis tick marks
+              />
+
+              <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
+              <Legend />
+
+              <Bar dataKey="saving" name="₹ Saving (Per Day)">
+                <LabelList dataKey="saving" position="top" formatter={(value: number) => `₹${value}`} fontSize={10} />
+
+                {savingsData.map((_, index) => (
+                  <Cell key={index} fill={colors[index % colors.length]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Energy Consumption Chart */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Energy Consumption Trends</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <AreaChart data={energyData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Area type="monotone" dataKey="consumption" stackId="1" stroke="#60A5FA" fill="#93C5FD" name="Actual" />
+              <Area type="monotone" dataKey="target" stackId="2" stroke="#34D399" fill="#A7F3D0" name="Target" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Process Efficiency Chart */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Process Efficiency Over Time</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <LineChart data={efficiencyData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="week" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="efficiency"
+                stroke="#FBBF24"
+                strokeWidth={3}
+                dot={{ fill: "#FDE68A", strokeWidth: 2, r: 6 }}
+                name="Efficiency %"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Production Volume Chart */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Production Volume</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={productionData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="heavy" stackId="a" fill="#93C5FD" name="Heavy Components" />
+              <Bar dataKey="light" stackId="a" fill="#A7F3D0" name="Light Components" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Quality Metrics Radar Chart */}
+        
+
+        {/* Cost Breakdown Pie Chart */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Cost Breakdown by Category</h3>
+          <Doughnut data={costBreakdownData} options={{ maintainAspectRatio: false }} />
+        </div>
+      </div>
+      {/* Additional Charts Grid 1 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Temperature & Humidity Monitoring */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Temperature & Humidity Monitoring</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <LineChart data={temperatureData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="time" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="temp" stroke="#F87171" strokeWidth={2} name="Temperature (°C)" />
+              <Line type="monotone" dataKey="humidity" stroke="#60A5FA" strokeWidth={2} name="Humidity (%)" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Defect Rate Trends */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Defect Rate Trends</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <AreaChart data={defectRateData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Area
+                type="monotone"
+                dataKey="defects"
+                stackId="1"
+                stroke="#FBBF24"
+                fill="#FDE68A"
+                name="Actual Defects %"
+              />
+              <Line type="monotone" dataKey="target" stroke="#EF4444" strokeDasharray="5 5" name="Target %" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Machine Utilization */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Machine Utilization</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={machineUtilizationData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="machine" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="utilization" fill="#A7F3D0" name="Utilization %" />
+              <Bar dataKey="downtime" fill="#FECACA" name="Downtime %" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Inventory Levels */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Inventory Levels</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={inventoryData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="item" tick={{ fontSize: 10 }} angle={-30} textAnchor="end" height={70} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="current" fill="#93C5FD" name="Current Stock" />
+              <Bar dataKey="minimum" fill="#FECACA" name="Minimum Level" />
+              <Bar dataKey="maximum" fill="#A7F3D0" name="Maximum Level" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Additional Charts Grid 2 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Maintenance Schedule */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Maintenance Schedule Status</h3>
+          <Doughnut data={maintenanceData} options={{ maintainAspectRatio: false }} />
+        </div>
+
+        {/* Worker Productivity */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Worker Productivity by Shift</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={productivityData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="shift" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="productivity" fill="#DDD6FE" name="Actual Productivity %" />
+              <Bar dataKey="target" fill="#A7F3D0" name="Target %" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Material Waste Tracking */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Material Waste Tracking</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <AreaChart data={wasteData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="week" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Area
+                type="monotone"
+                dataKey="waste"
+                stackId="1"
+                stroke="#F87171"
+                fill="#FECACA"
+                name="Total Waste (kg)"
+              />
+              <Area
+                type="monotone"
+                dataKey="recycled"
+                stackId="2"
+                stroke="#34D399"
+                fill="#A7F3D0"
+                name="Recycled (kg)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Order Fulfillment */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Daily Order Fulfillment</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={orderFulfillmentData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="orders" fill="#93C5FD" name="Total Orders" />
+              <Bar dataKey="fulfilled" fill="#A7F3D0" name="Fulfilled Orders" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Additional Charts Grid 3 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Customer Satisfaction */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Customer Satisfaction</h3>
+          <Doughnut data={customerSatisfactionData} options={{ maintainAspectRatio: false }} />
+        </div>
+
+        {/* Financial Performance */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Quarterly Financial Performance</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={financialData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="quarter" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(value) => [`₹${value}K`, ""]} />
+              <Legend />
+              <Bar dataKey="revenue" fill="#93C5FD" name="Revenue (₹K)" />
+              <Bar dataKey="profit" fill="#A7F3D0" name="Profit (₹K)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Shift Performance Comparison */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Shift Performance Comparison</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={shiftPerformanceData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="metric" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="morning" fill="#FDE68A" name="Morning Shift" />
+              <Bar dataKey="afternoon" fill="#93C5FD" name="Afternoon Shift" />
+              <Bar dataKey="night" fill="#DDD6FE" name="Night Shift" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Supplier Performance */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Supplier Performance</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={supplierPerformanceData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="supplier" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="onTime" fill="#A7F3D0" name="On-Time Delivery %" />
+              <Bar dataKey="quality" fill="#93C5FD" name="Quality Score %" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Additional Charts Grid 4 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Equipment Health Status */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Equipment Health Status</h3>
+          <Doughnut data={equipmentHealthData} options={{ maintainAspectRatio: false }} />
+        </div>
+
+        {/* Cycle Time Analysis */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Cycle Time Analysis</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <BarChart data={cycleTimeData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="process" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(value) => [`${value} min`, ""]} />
+              <Legend />
+              <Bar dataKey="current" fill="#FECACA" name="Current Time (min)" />
+              <Bar dataKey="target" fill="#A7F3D0" name="Target Time (min)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Safety Metrics */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Safety Metrics</h3>
+          <ResponsiveContainer width="100%" height="95%">
+            <LineChart data={safetyMetricsData}>
+              <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="incidents" stroke="#EF4444" strokeWidth={3} name="Safety Incidents" />
+              <Line type="monotone" dataKey="nearMiss" stroke="#F59E0B" strokeWidth={2} name="Near Miss Events" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Production Process Pyramid */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Production Process Flow (Pyramid)</h3>
+          <PyramidChart data={pyramidData} />
+        </div>
+
+        {/* Manufacturing Efficiency Hierarchy */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Manufacturing Efficiency Hierarchy</h3>
+          <div className="flex flex-col items-center justify-center h-full space-y-2">
+            {efficiencyPyramidData.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center relative"
+                style={{
+                  width: `${item.efficiency}%`,
+                  maxWidth: "95%",
+                  minWidth: "30%",
+                }}
+              >
+                <div
+                  className="h-12 flex flex-col items-center justify-center text-xs font-medium text-gray-800 rounded-lg shadow-md border-2 border-white"
+                  style={{
+                    backgroundColor: item.color,
+                    width: "100%",
+                  }}
+                >
+                  <span className="font-semibold">{item.level}</span>
+                  <span className="text-xs opacity-80">{item.description}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sales Funnel Pyramid */}
+       
+
+        {/* Cost Structure Pyramid */}
+        <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-medium mb-2">Cost Structure Pyramid</h3>
+          <div className="flex flex-col items-center justify-center h-full space-y-1">
+            {[
+              { name: "Direct Materials", percentage: 90, cost: "₹45,000", color: "#A7F3D0" },
+              { name: "Direct Labor", percentage: 75, cost: "₹30,000", color: "#93C5FD" },
+              { name: "Manufacturing Overhead", percentage: 60, cost: "₹20,000", color: "#FDE68A" },
+              { name: "Quality Assurance", percentage: 45, cost: "₹12,000", color: "#FECACA" },
+              { name: "Administrative", percentage: 30, cost: "₹8,000", color: "#DDD6FE" },
+              { name: "Profit Margin", percentage: 20, cost: "₹5,000", color: "#FED7AA" },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center relative"
+                style={{
+                  width: `${item.percentage}%`,
+                  maxWidth: "90%",
+                  minWidth: "20%",
+                }}
+              >
+                <div
+                  className="h-10 flex items-center justify-between px-3 text-xs font-medium text-gray-800 rounded shadow-sm border w-full"
+                  style={{
+                    backgroundColor: item.color,
+                  }}
+                >
+                  <span className="truncate">{item.name}</span>
+                  <span className="font-bold">{item.cost}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default OverviewPage
+///////////////////////////////////////////////////////////////////////
+"use client";
+
+import React from "react";
+import {
+  Line,
+  BarChart,
+  LabelList,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  Cell,
+} from "recharts";
+import CountUp from "react-countup";
+import {
+  FaRupeeSign,
+  FaChartLine,
+  FaIndustry,
+  FaLeaf,
+  FaCalendarAlt,
+} from "react-icons/fa";
+import { MdSavings } from "react-icons/md";
+import { Doughnut } from "react-chartjs-2";
+import type { ChartOptions } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip as ChartTooltip,
+  Legend as ChartLegend,
+} from "chart.js";
+ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
+
+const summaryData = [
+  {
+    title: "Total Processes",
+    value: 17,
+    isCurrency: false,
+    colors: "from-blue-600 to-blue-500",
+    icon: <FaIndustry className="text-2xl" />,
+  },
+  {
+    title: "Without Zauvijek",
+    value: 2028423.77,
+    isCurrency: true,
+    colors: "from-blue-700 to-blue-500",
+    icon: <FaRupeeSign className="text-2xl" />,
+  },
+  {
+    title: "With Zauvijek",
+    value: 1980849.41,
+    isCurrency: true,
+    colors: "from-sky-700 to-sky-500",
+    icon: <FaRupeeSign className="text-2xl" />,
+  },
+  {
+    title: "Avg. Cost Reduction",
+    value: 41.58,
+    suffix: "%",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-rose-600 to-red-500",
+    icon: <FaChartLine className="text-2xl" />,
+  },
+  {
+    title: "CO₂ Reduced",
+    value: 54858.75,
+    suffix: " kWh",
+    isCurrency: false,
+    decimals: 2,
+    colors: "from-emerald-600 to-emerald-400",
+    icon: <FaLeaf className="text-2xl" />,
+  },
+  {
+    title: "Total Savings",
+    value: 49536.38,
+    isCurrency: true,
+    decimals: 2,
+    colors: "from-yellow-500 to-orange-400",
+    icon: <MdSavings className="text-2xl" />,
+  },
+  {
+    title: "Monthly Saving",
+    value: 1484140.0,
+    isCurrency: true,
+    colors: "from-indigo-600 to-indigo-400",
+    icon: <FaCalendarAlt className="text-2xl" />,
+  },
+  {
+    title: "Yearly Saving",
+    value: 18052701.25,
+    isCurrency: true,
+    colors: "from-teal-600 to-teal-400",
+    icon: <FaCalendarAlt className="text-2xl" />,
+  },
+];
+const componentChart = {
+  labels: [
+    "Pattern Making : 60.00%",
+    "Mold Preparation : 55.56%",
+    "Assembly of Mold & Gating : 60.00%",
+    "Metal Melting : 12.60%",
+    "Tapping : 43.75%",
+    // "Purification : 41.67%",
+    // "Pouring : 35.71%",
+    // "Rough Casting : 46.16%",
+    // "Cooling : 40.00%",
+    // "Solidification : 50.00%",
+    // "Risers : 50.00%",
+    // "Shakeout : 44.40%",
+    // "Mold Breaking : 46.10%",
+    // "Fettling : 40.90%",
+    // "Scrap Opt. : 2.00%",
+    // "Heat Process : 40.00%",
+    // "Vibration : 38.00%",
+  ],
+  datasets: [
+    {
+      data: [60, 55.56, 60, 12.6, 43.75],
+      backgroundColor: [
+       "#4C7073", // ✅ Refined Teal Blue
+  "#D3823C", // ✅ Burnt Orange
+  "#C9B693", // Updated Warm Beige (richer tone)
+  "#3B4C54", // Darker Slate Blue for contrast
+  "#F0EDE5", // Softer Light Sand for better readability
+      ],
+      borderWidth: 1,
+      cutout: "50%",
+    },
+  ],
+};
+
+
+
+
+
+const savingsData = [
+  { name: "Pattern Making", saving: 292.5 },
+  { name: "Mold Prep", saving: 406.25 },
+  { name: "Assembly", saving: 292.5 },
+  // { name: "Metal Melting", saving: 1381.25 },
+  { name: "Tapping", saving: 437.5 },
+  { name: "Purification", saving: 406.25 },
+  { name: "Pouring", saving: 406.25 },
+  { name: "Rough Casting", saving: 243.75 },
+  // { name: "Cooling", saving: 146.25 },
+  // { name: "Solidification", saving: 73.13 },
+  // { name: "Risers", saving: 56.88 },
+  // { name: "Shakeout", saving: 32.5 },
+  // { name: "Shot Blasting", saving: 48.75 },
+  // { name: "Finishing", saving: 73.13 },
+  // { name: "Scrap Opt.", saving: 40000 },
+  // { name: "Heat Process", saving: 5000 },
+  // { name: "Vibration", saving: 237.5 },
+];
+
+const colors = [
+   "#34B58A", // Teal Blue
+        "#34B58A", // Burnt Orange
+        "#34B58A", // Warm Beige
+        "#34B58A", // Slate Blue
+        "#34B58A", // Light Sand (Optional)
+  "#34B58A", "#34B58A", "#f97316", "#ef4444", "#f43f5e",
+  "#e11d48", "#a855f7", "#6366f1", "#0f172a", "#14b8a6",
+  "#8b5cf6", "#ec4899",
+];
+
+const chartOptions: ChartOptions<"doughnut"> = {
+  plugins: {
+    legend: {
+      position: "right", // ✅ This is now correct, matching allowed values
+      labels: {
+        color: "#fff",
+        font: {
+          size: 12,
+        },
+      },
+    },
+    tooltip: {
+      callbacks: {
+        label: (ctx) => `${ctx.label}`,
+      },
+    },
+  },
+  maintainAspectRatio: false,
+};
+
+const allProcessData = [
+  { name: "Pattern Making", without: 487.5, with: 195, saving: 292.5 },
+  { name: "Mold Preparation", without: 731.25, with: 325, saving: 406.25 },
+  { name: "Assembly", without: 487.5, with: 195, saving: 292.5 },
+  { name: "Metal Melting", without: 10968.75, with: 9587.5, saving: 1381.25 },
+  { name: "Tapping", without: 1000, with: 562.5, saving: 437.5 },
+  { name: "Purification", without: 975, with: 568.75, saving: 406.25 },
+  { name: "Pouring", without: 1137.5, with: 731.25, saving: 406.25 },
+  { name: "Rough Casting", without: 528.13, with: 284.38, saving: 243.75 },
+  { name: "Cooling", without: 365.63, with: 219.38, saving: 146.25 },
+  { name: "Solidification", without: 146.25, with: 73.13, saving: 73.13 },
+  { name: "Risers", without: 113.75, with: 56.88, saving: 56.88 },
+  { name: "Shakeout", without: 73.13, with: 40.63, saving: 32.5 },
+  { name: "Mold Breaking", without: 105.63, with: 56.88, saving: 48.75 },
+  { name: "Fettling", without: 178.75, with: 105.63, saving: 73.13 },
+  { name: "Scrap Opt.", without: 2000000, with: 1960000, saving: 40000 },
+  { name: "Heat Process", without: 12500, with: 7500, saving: 5000 },
+  // { name: "Vibration", without: 625, with: 387.5, saving: 237.5 },
+];
+
+type ProcessData = {
+  name: string;
+  without: number;
+  with: number;
+  saving: number;
+};
+
+const chunkData = (data: ProcessData[], chunkSize: number): ProcessData[][] => {
+  const chunks: ProcessData[][] = [];
+  for (let i = 0; i < data.length; i += chunkSize) {
+    chunks.push(data.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+const OverviewPage = () => {
+  const chartChunks = chunkData(allProcessData, 8);
+  return (
+    <div className="min-h-screen bg-white dark:bg-[#0f1422] text-black dark:text-white p-6 mb-5 transition-colors duration-300">
+      <div className="flex flex-wrap gap-3 items-center mb-3">
+        {" "}
+        <label className="flex items-center space-x-2 text-md">
+          {" "}
+          <span className="font-semibold">Filter By</span>{" "}
+        </label>{" "}
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          {" "}
+          <option>Line 1</option> <option>Line 2</option>{" "}
+        </select>
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          <option>Date</option>
+        </select>
+        <select className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700">
+          <option>All</option>
+          <option>Heavy</option>
+          <option>Light</option>
+        </select>
+        <input
+          type="date"
+          className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700"
+          defaultValue="2023-04-28"
+        />
+        <label className="flex items-center space-x-2 text-md">
+          <span className="font-semibold">From</span>
+        </label>
+        <input
+          type="date"
+          className="px-3 py-2 rounded border text-sm w-32 dark:bg-[#0f1422] dark:border-gray-700"
+          defaultValue="2023-05-11"
+        />
+        <label className="flex items-center space-x-2 text-sm w-20">
+          <input type="checkbox" />
+          <span>Prod Qty</span>
+        </label>
+        <button className="bg-[#2C5282] hover:bg-[#2B6CB0] text-white text-sm px-4 py-2 rounded flex items-center gap-1">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 12.414V18a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5.586L3.293 6.707A1 1 0 013 6V4z"
+            />
+          </svg>
+          Filter
+        </button>
+      </div>
+
+      {/* Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
+        {summaryData.map((item, idx) => (
+          <div
+            key={idx}
+            className={`bg-gradient-to-r ${item.colors} p-4 rounded-xl text-white shadow flex gap-3 items-start sm:items-center`}
+          >
+            {item.icon}
+            <div>
+              <div className="text-base font-semibold">{item.title}</div>
+              <div className="text-sm sm:text-base">
+                {item.isCurrency && "₹"}
+                <CountUp
+                  end={item.value}
+                  duration={1.8}
+                  decimals={item.decimals || 0}
+                  separator=","
+                  suffix={item.suffix || ""}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-4">
+        <div className="flex flex-col gap-3">
+          {chartChunks.map((chunk, idx) => (
+            <div key={idx} className="grid grid-cols-1 lg:grid-cols-1 gap-3">
+              {/* Bar Chart */}
+              <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-medium mb-2">Cost Comparison ₹</h3>
+                <ResponsiveContainer width="100%" height="95%">
+                  <BarChart data={chunk}>
+                    <CartesianGrid stroke="#444" strokeDasharray="0" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "#fff", fontSize: 10 }}
+                      angle={-30}
+                      textAnchor="end"
+                      height={60}
+                      axisLine={true}  
+                    />
+                    <YAxis
+                      tick={{ fill: "#fff", fontSize: 12 }}
+                      axisLine={true}   // ✅ hides Y axis line
+                      tickLine={false} // ✅ hides tick lines on Y axis
+                    />
+                    {/* <Tooltip formatter={(value) => [`₹${value}`, "Cost"]} /> */}
+                    <Legend />
+                    <Bar dataKey="without" fill="#34B58A" name="Manual">
+  <LabelList
+    dataKey="without"
+    position="top"
+    fill="#F9FAFB" // Light text on dark bg
+    fontSize={11}
+  />
+</Bar>
+
+<Bar dataKey="with" fill="#2C5282" name="Zauvijek">
+  <LabelList
+    dataKey="with"
+    position="top"
+    fill="#F9FAFB"
+    fontSize={11}
+  />
+</Bar>
+
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Line Chart */}
+              <div className="h-[400px] bg-white dark:bg-[#0f1422] p-4 rounded shadow hover:shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-medium mb-2">Savings</h3>
+                <ResponsiveContainer width="100%" height="95%">
+                  <LineChart
+                    data={chunk}
+                    margin={{ top: 10, right: 20, bottom: 10, left: 0 }}
+                  >
+                    <CartesianGrid stroke="#444" strokeDasharray="0" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "#fff", fontSize: 10 }}
+                      angle={-30}
+                      textAnchor="end"
+                      height={60}
+                      axisLine={true}  
+                    />
+                    <YAxis tick={{ fill: "#fff", fontSize: 12 }} axisLine={true}   />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#1f2937",
+                        borderColor: "#374151",
+                      }}
+                      labelStyle={{ color: "#fff" }}
+                      itemStyle={{ color: "#fff" }}
+                      formatter={(value) => [`₹${value}`, "Cost"]}
+                    />
+                    <Legend wrapperStyle={{ color: "#fff" }} />
+                    <Line
+                      type="monotone"
+                      dataKey="without"
+                      stroke="#0f172a"
+                      name="Manual"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="with"
+                      stroke="#22c55e"
+                      name="Zauvijek"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="saving"
+                      stroke="#f59e0b"
+                      name="Saving"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="bg-white dark:bg-[#0f1422] p-4 rounded shadow border h-[450px]">
+          <h3 className="text-md font-semibold mb-2">
+            Rejection Distribution By Component
+          </h3>
+          <Doughnut data={componentChart} options={chartOptions} />
+        </div>
+
+        <div className="bg-white dark:bg-[#0f1422] p-4 rounded shadow border h-[450px]">
+          <h3 className="text-md font-semibold mb-2">
+            Cost Savings Distribution
+          </h3>
+ <ResponsiveContainer width="100%" height="90%">
+  <BarChart data={savingsData}>
+    {/* CartesianGrid removed to hide inner lines */}
+    
+    <XAxis
+      dataKey="name"
+      tick={{ fontSize: 10 }}
+      angle={-30}
+      textAnchor="end"
+      height={70}
+      axisLine={true}     // Show X-axis line
+      tickLine={true}     // Show X-axis tick marks
+    />
+    
+    <YAxis
+      tick={{ fontSize: 12 }}
+      axisLine={true}     // Show Y-axis line
+      tickLine={true}     // Show Y-axis tick marks
+    />
+    
+    <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
+    <Legend />
+    
+    <Bar dataKey="saving" name="₹ Saving (Per Day)">
+      <LabelList
+  dataKey="saving"
+  position="top"
+  formatter={(value: number) => `₹${value}`}
+  fontSize={10}
+/>
+
+      {savingsData.map((_, index) => (
+        <Cell key={index} fill={colors[index % colors.length]} />
+      ))}
+    </Bar>
+  </BarChart>
+</ResponsiveContainer>
+
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OverviewPage;
